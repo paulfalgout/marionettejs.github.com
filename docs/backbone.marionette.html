@@ -40,7 +40,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>v1.6.0</p>
+              <p>v1.6.1</p>
 <p>Copyright (c)2014 Derick Bailey, Muted Solutions, LLC.
 Distributed under MIT license</p>
 <p><a href="http://marionettejs.com">http://marionettejs.com</a></p>
@@ -6270,7 +6270,7 @@ get rid of the module name and definition function</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>      fn = def.define;
-      startWithParent = def.startWithParent;
+      startWithParent = (<span class="keyword">typeof</span> def.startWithParent !== <span class="string">'undefined'</span>) ? def.startWithParent : <span class="literal">true</span>;
 
     } <span class="keyword">else</span> {</pre></div></div>
             

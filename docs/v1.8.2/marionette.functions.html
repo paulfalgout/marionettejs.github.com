@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="docs no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="docs no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="docs no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="docs no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Marionette.js</title>
+        <meta content="" name="description">
+        <meta name="viewport" content="width=device-width">
+        <link href="../../stylesheets/docs-9b3ec880.css" media="screen" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="//use.typekit.net/ycm5ipv.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <!--[if lt IE 9]><script src="js/vendor/selectivizr-1.0.2.min.js"></script><![endif]-->
+        <script src="../../javascripts/header-443c0a2a.js" type="text/javascript"></script>
+
+        <link rel="author" href="humans.txt">
+        <link rel="publisher" href="https://plus.google.com/101060306397560578875/">
+        <meta name="twitter:card" value="Make your backbone applications dance with a composite application architecture">
+        <meta name="twitter:site" value="@marionettejs">
+        <meta property="og:site_name" content="Marionette.js – Make your backbone applications dance with a composite application architecture!">
+        <meta property="og:image" content="http://marionettejs.com/images/og-standard.jpg">
+        <meta property="og:url" content="http://marionettejs.com/">
+        <meta property="og:description" content="">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+        <script src="/downloads/backbone.marionette.js"></script>
+        <script src="../../javascripts/docs-7c87f248.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="docs">
+          <nav class="docs__sidebar">
+            <h3>Marionette API</h3>
+            <ul>
+              <li><a href="marionette.application">Application</a></li>
+              <li><a href="marionette.application.module">Application.module</a></li>
+              <li><a href="marionette.approuter">AppRouter</a></li>
+              <li><a href="marionette.behavior">Behavior</a></li>
+              <li><a href="marionette.behaviors">Behaviors</a></li>
+              <li><a href="marionette.callbacks">Callbacks</a></li>
+              <li><a href="marionette.collectionview">CollectionView</a></li>
+              <li><a href="marionette.compositeview">CompositeView</a></li>
+              <li><a href="marionette.configuration">Configuration</a></li>
+              <li><a href="marionette.controller">Controller</a></li>
+              <li><a href="marionette.functions">Functions</a></li>
+              <li><a href="marionette.itemview">ItemView</a></li>
+              <li><a href="marionette.layout">Layout</a></li>
+              <li><a href="marionette.region">Region</a></li>
+              <li><a href="marionette.regionmanager">RegionManager</a></li>
+              <li><a href="marionette.renderer">Renderer</a></li>
+              <li><a href="marionette.templatecache">TemplateCache</a></li>
+              <li><a href="marionette.view">View</a></li>
+            </ul>
+          </nav>
+          <div class="docs__content">
+            <h1 id="marionette-functions">Marionette functions</h1>
+
+<p>Marionette provides a set of utility / helper functions that are used to
+facilitate common behaviors throughout the framework. These functions may
+be useful to those that are building on top of Marionette, as they provide
+a way to get the same behaviors and conventions from your own code.</p>
+
+<h2 id="documentation-index">Documentation Index</h2>
+
+<ul>
+<li><a href="#marionetteextend">Marionette.extend</a></li>
+<li><a href="#marionettegetoption">Marionette.getOption</a></li>
+<li><a href="#marionettetriggermethod">Marionette.triggerMethod</a></li>
+<li><a href="#marionettebindentityevents">Marionette.bindEntityEvent</a></li>
+<li><a href="#marionettenormalizeevents">Marionette.normalizeEvents</a></li>
+<li><a href="#marionettenormalizeuikeys">Marionette.normalizeUIKeys</a></li>
+<li><a href="#marionetteactascollection">Marionette.actAsCollection</a></li>
+</ul>
+
+<h2 id="marionette.extend">Marionette.extend</h2>
+
+<p>Backbone&rsquo;s <code>extend</code> function is a useful utility to have, and is used in
+various places in Marionette. To make the use of this method more consistent,
+Backbone&rsquo;s <code>extend</code> has been aliased to <code>Marionette.extend</code>. This allows
+you to get the extend functionality for your object without having to
+decide if you want to use Backbone.View or Backbone.Model or another
+Backbone object to grab the method from.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">Foo</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){};</span>
+
+<span class="c1">// use Marionette.extend to make Foo extendable, just like other
+// Backbone and Marionette objects
+</span><span class="nx">Foo</span><span class="p">.</span><span class="nx">extend</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">extend</span><span class="p">;</span>
+
+<span class="c1">// Now Foo can be extended to create a new type, with methods
+</span><span class="kd">var</span> <span class="nx">Bar</span> <span class="o">=</span> <span class="nx">Foo</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+
+  <span class="na">someMethod</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span> <span class="p">...</span> <span class="p">}</span>
+
+  <span class="c1">// ...
+</span><span class="p">});</span>
+
+<span class="c1">// Create an instance of Bar
+</span><span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Bar</span><span class="p">();</span>
+</pre>
+<h2 id="marionette.getoption">Marionette.getOption</h2>
+
+<p>Retrieve an object&rsquo;s attribute either directly from the object, or from
+the object&rsquo;s <code>this.options</code>, with <code>this.options</code> taking precedence.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">M</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">foo</span><span class="p">:</span> <span class="s2">&quot;bar&quot;</span><span class="p">,</span>
+
+  <span class="na">initialize</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">getOption</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s2">&quot;foo&quot;</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="k">new</span> <span class="nx">M</span><span class="p">();</span> <span class="c1">// =&gt; &quot;bar&quot;
+</span>
+<span class="k">new</span> <span class="nx">M</span><span class="p">({},</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="s2">&quot;quux&quot;</span> <span class="p">});</span> <span class="c1">// =&gt; &quot;quux&quot;
+</span></pre>
+<p>This is useful when building an object that can have configuration set
+in either the object definition or the object&rsquo;s constructor options.</p>
+
+<h3 id="falsey-values">Falsey values</h3>
+
+<p>The <code>getOption</code> function will return any falsey value from the <code>options</code>,
+other than <code>undefined</code>. If an object&rsquo;s options has an undefined value, it will
+attempt to read the value from the object directly.</p>
+
+<p>For example:</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">M</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">foo</span><span class="p">:</span> <span class="s2">&quot;bar&quot;</span><span class="p">,</span>
+
+  <span class="na">initialize</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">f</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">getOption</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s2">&quot;foo&quot;</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="k">new</span> <span class="nx">M</span><span class="p">();</span> <span class="c1">// =&gt; &quot;bar&quot;
+</span>
+<span class="kd">var</span> <span class="nx">f</span><span class="p">;</span>
+<span class="k">new</span> <span class="nx">M</span><span class="p">({},</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="nx">f</span> <span class="p">});</span> <span class="c1">// =&gt; &quot;bar&quot;
+</span></pre>
+<p>In this example, &ldquo;bar&rdquo; is returned both times because the second
+example has an undefined value for <code>f</code>.</p>
+
+<h2 id="marionette.triggermethod">Marionette.triggerMethod</h2>
+
+<p>Trigger an event and a corresponding method on the target object.</p>
+
+<p>When an event is triggered, the first letter of each section of the
+event name is capitalized, and the word &ldquo;on&rdquo; is tagged on to the front
+of it. Examples:</p>
+
+<ul>
+<li><code>triggerMethod(&quot;render&quot;)</code> fires the &ldquo;onRender&rdquo; function</li>
+<li><code>triggerMethod(&quot;before:close&quot;)</code> fires the &ldquo;onBeforeClose&rdquo; function</li>
+</ul>
+
+<p>All arguments that are passed to the triggerMethod call are passed along to both the event and the method, with the exception of the event name not being passed to the corresponding method.</p>
+
+<p><code>triggerMethod(&quot;foo&quot;, bar)</code> will call <code>onFoo: function(bar){...})</code></p>
+
+<p>Note that <code>triggerMethod</code> can be called on objects that do not have
+<code>Backbone.Events</code> mixed in to them. These objects will not have a <code>trigger</code>
+method, and no attempt to call <code>.trigger()</code> will be made. The <code>on{Name}</code>
+callback methods will still be called, though.</p>
+
+<h2 id="marionette.bindentityevents">Marionette.bindEntityEvents</h2>
+
+<p>This method is used to bind a backbone &ldquo;entity&rdquo; (collection/model)
+to methods on a target object.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+
+  <span class="na">modelEvents</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;change:foo&quot;</span><span class="err">:</span> <span class="s2">&quot;doSomething&quot;</span>
+  <span class="p">},</span>
+
+  <span class="na">initialize</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">Marionette</span><span class="p">.</span><span class="nx">bindEntityEvents</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">modelEvents</span><span class="p">);</span>
+  <span class="p">},</span>
+
+  <span class="na">doSomething</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// the &quot;change:foo&quot; event was fired from the model
+</span>    <span class="c1">// respond to it appropriately, here.
+</span>  <span class="p">}</span>
+
+<span class="p">});</span>
+</pre>
+<p>The first parameter, <code>target</code>, must have a <code>listenTo</code> method from the
+EventBinder object.</p>
+
+<p>The second parameter is the entity (Backbone.Model or Backbone.Collection)
+to bind the events from.</p>
+
+<p>The third parameter is a hash of { &ldquo;event:name&rdquo;: &ldquo;eventHandler&rdquo; }
+configuration. Multiple handlers can be separated by a space. A
+function can be supplied instead of a string handler name.</p>
+
+<h2 id="marionette.normalizeevents">Marionette.normalizeEvents</h2>
+
+<p>Receives a hash of event names and functions and/or function names, and returns the
+same hash with the function names replaced with the function references themselves.</p>
+
+<p>This function is attached to the <code>Marionette.View</code> prototype by default. To use it from non-View classes you&rsquo;ll need to attach it yourself.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">View</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+
+  <span class="na">initialize</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">someFn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{};</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">someOtherFn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{};</span>
+    <span class="kd">var</span> <span class="nx">hash</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="na">eventOne</span><span class="p">:</span> <span class="s2">&quot;someFn&quot;</span><span class="p">,</span> <span class="c1">// This will become a reference to `this.someFn`
+</span>      <span class="na">eventTwo</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">someOtherFn</span>
+    <span class="p">};</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">normalizedHash</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">normalizeMethods</span><span class="p">(</span><span class="nx">hash</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="p">});</span>
+</pre>
+<h2 id="marionette.normalizeuikeys">Marionette.normalizeUIKeys</h2>
+
+<p>This method allows you to use the <code>@ui.</code> syntax within a given key for triggers and events hashes. It
+swaps the <code>@ui.</code> reference with the associated selector.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">hash</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">'click @ui.list'</span><span class="err">:</span> <span class="s1">'myCb'</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">ui</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">'list'</span><span class="err">:</span> <span class="s1">'ul'</span>
+<span class="p">};</span>
+
+<span class="c1">// This sets 'click @ui.list' to be 'click ul' in the newHash object
+</span><span class="kd">var</span> <span class="nx">newHash</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">normalizeUIKeys</span><span class="p">(</span><span class="nx">hash</span><span class="p">,</span> <span class="nx">ui</span><span class="p">);</span>
+</pre>
+<h2 id="marionette.actascollection">Marionette.actAsCollection</h2>
+
+<p>Utility function for mixing in underscore collection behavior to an object.</p>
+
+<p>It works by taking an object and a property field, in this example &lsquo;list&rsquo;,
+and appending collection functions to the object so that it can
+delegate collection calls to its list.</p>
+
+<h4 id="object-literal">Object Literal</h4>
+<pre class="highlight javascript"><span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">list</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="nx">Marionette</span><span class="p">.</span><span class="nx">actAsCollection</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="s1">'list'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="kr">double</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span> <span class="k">return</span> <span class="nx">v</span><span class="o">*</span><span class="mi">2</span><span class="p">};</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kr">double</span><span class="p">));</span> <span class="c1">// [2, 4, 6]
+</span></pre>
+<h4 id="function-prototype">Function Prototype</h4>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">Func</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">list</span> <span class="o">=</span> <span class="nx">list</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">Marionette</span><span class="p">.</span><span class="nx">actAsCollection</span><span class="p">(</span><span class="nx">Func</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span> <span class="s1">'list'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">func</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Func</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]);</span>
+
+
+<span class="kd">var</span> <span class="kr">double</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">){</span> <span class="k">return</span> <span class="nx">v</span><span class="o">*</span><span class="mi">2</span><span class="p">};</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">func</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kr">double</span><span class="p">));</span> <span class="c1">// [2, 4, 6]
+</span></pre>
+<p>The first parameter is the object that will delegate underscore collection methods.</p>
+
+<p>The second parameter is the object field that will hold the list.</p>
+
+          </div>
+        </div>
+    </body>
+</html>

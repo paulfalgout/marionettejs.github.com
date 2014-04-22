@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="docs no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="docs no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="docs no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="docs no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Marionette.js</title>
+        <meta content="" name="description">
+        <meta name="viewport" content="width=device-width">
+        <link href="../../stylesheets/docs-9b3ec880.css" media="screen" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="//use.typekit.net/ycm5ipv.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <!--[if lt IE 9]><script src="js/vendor/selectivizr-1.0.2.min.js"></script><![endif]-->
+        <script src="../../javascripts/header-443c0a2a.js" type="text/javascript"></script>
+
+        <link rel="author" href="humans.txt">
+        <link rel="publisher" href="https://plus.google.com/101060306397560578875/">
+        <meta name="twitter:card" value="Make your backbone applications dance with a composite application architecture">
+        <meta name="twitter:site" value="@marionettejs">
+        <meta property="og:site_name" content="Marionette.js – Make your backbone applications dance with a composite application architecture!">
+        <meta property="og:image" content="http://marionettejs.com/images/og-standard.jpg">
+        <meta property="og:url" content="http://marionettejs.com/">
+        <meta property="og:description" content="">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+        <script src="/downloads/backbone.marionette.js"></script>
+        <script src="../../javascripts/docs-7c87f248.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="docs">
+          <nav class="docs__sidebar">
+            <h3>Marionette API</h3>
+            <ul>
+              <li><a href="marionette.application">Application</a></li>
+              <li><a href="marionette.application.module">Application.module</a></li>
+              <li><a href="marionette.approuter">AppRouter</a></li>
+              <li><a href="marionette.behavior">Behavior</a></li>
+              <li><a href="marionette.behaviors">Behaviors</a></li>
+              <li><a href="marionette.callbacks">Callbacks</a></li>
+              <li><a href="marionette.collectionview">CollectionView</a></li>
+              <li><a href="marionette.compositeview">CompositeView</a></li>
+              <li><a href="marionette.configuration">Configuration</a></li>
+              <li><a href="marionette.controller">Controller</a></li>
+              <li><a href="marionette.functions">Functions</a></li>
+              <li><a href="marionette.itemview">ItemView</a></li>
+              <li><a href="marionette.layout">Layout</a></li>
+              <li><a href="marionette.region">Region</a></li>
+              <li><a href="marionette.regionmanager">RegionManager</a></li>
+              <li><a href="marionette.renderer">Renderer</a></li>
+              <li><a href="marionette.templatecache">TemplateCache</a></li>
+              <li><a href="marionette.view">View</a></li>
+            </ul>
+          </nav>
+          <div class="docs__content">
+            <h1 id="marionette.controller">Marionette.Controller</h1>
+
+<p>A multi-purpose object to use as a controller for
+modules and routers, and as a mediator for workflow
+and coordination of other objects, views, and more.</p>
+
+<h2 id="documentation-index">Documentation Index</h2>
+
+<ul>
+<li><a href="#basic-use">Basic Use</a></li>
+<li><a href="#closing-a-controller">Closing A Controller</a></li>
+<li><a href="#on-the-name-controller">On The Name &lsquo;Controller&rsquo;</a></li>
+</ul>
+
+<h2 id="basic-use">Basic Use</h2>
+
+<p>A <code>Marionette.Controller</code> can be extended, like other
+Backbone and Marionette objects. It supports the standard
+<code>initialize</code> method, has a built-in <code>EventBinder</code>, and
+can trigger events, itself.</p>
+<pre class="highlight javascript"><span class="c1">// define a controller
+</span><span class="kd">var</span> <span class="nx">MyController</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">Controller</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+
+  <span class="na">initialize</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">stuff</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">stuff</span><span class="p">;</span>
+  <span class="p">},</span>
+
+  <span class="na">doStuff</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;stuff:done&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">stuff</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="p">});</span>
+
+<span class="c1">// create an instance
+</span><span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyController</span><span class="p">({</span>
+  <span class="na">stuff</span><span class="p">:</span> <span class="s2">&quot;some stuff&quot;</span>
+<span class="p">});</span>
+
+<span class="c1">// use the built in EventBinder
+</span><span class="nx">c</span><span class="p">.</span><span class="nx">listenTo</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="s2">&quot;stuff:done&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">stuff</span><span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">stuff</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// do some stuff
+</span><span class="nx">c</span><span class="p">.</span><span class="nx">doStuff</span><span class="p">();</span>
+</pre>
+<h2 id="closing-a-controller">Closing A Controller</h2>
+
+<p>Each Controller instance has a built in <code>close</code> method that handles
+unbinding all of the events that are directly attached to the controller
+instance, as well as those that are bound using the EventBinder from
+the controller.</p>
+
+<p>Invoking the <code>close</code> method will trigger a &ldquo;close&rdquo; event and corresponding
+<code>onClose</code> method call. These calls will be passed any arguments <code>close</code>
+was invoked with.</p>
+<pre class="highlight javascript"><span class="c1">// define a controller with an onClose method
+</span><span class="kd">var</span> <span class="nx">MyController</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">Controller</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+
+  <span class="na">onClose</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span> <span class="nx">arg2</span><span class="p">){</span>
+    <span class="c1">// put custom code here, to close this controller
+</span>  <span class="p">}</span>
+
+<span class="p">});</span>
+
+<span class="c1">// create a new controller instance
+</span><span class="kd">var</span> <span class="nx">contr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyController</span><span class="p">();</span>
+
+<span class="c1">// add some event handlers
+</span><span class="nx">contr</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;close&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span> <span class="nx">arg2</span><span class="p">){</span> <span class="p">...</span> <span class="p">});</span>
+<span class="nx">contr</span><span class="p">.</span><span class="nx">listenTo</span><span class="p">(</span><span class="nx">something</span><span class="p">,</span> <span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){...});</span>
+
+<span class="c1">// close the controller: unbind all of the
+// event handlers, trigger the &quot;close&quot; event and
+// call the onClose method
+</span><span class="nx">contr</span><span class="p">.</span><span class="nx">close</span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span> <span class="nx">arg2</span><span class="p">);</span>
+</pre>
+<h2 id="on-the-name-&#39;controller&#39;">On The Name &lsquo;Controller&rsquo;</h2>
+
+<p>The name <code>Controller</code> is bound to cause a bit of confusion, which is
+rather unfortunate. There was some discussion and debate about what to
+call this object, the idea that people would confuse this with an
+MVC style controller came up a number of times. In the end, we decided
+to call this a controller anyway&ndash;as the typical use case is to control
+the workflow and process of an application and/or module.</p>
+
+<p>But the truth is, this is a very generic, multi-purpose object that can
+serve many different roles, in many different scenarios. We are always open
+to suggestions, with good reason and discussion, on renaming objects to
+be more descriptive and less confusing. If you would like to suggest a
+different name, please do so in either the mailing list or in the Github
+Issues list.</p>
+
+          </div>
+        </div>
+    </body>
+</html>

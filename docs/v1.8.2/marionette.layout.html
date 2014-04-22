@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="docs no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="docs no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="docs no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="docs no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Marionette.js</title>
+        <meta content="" name="description">
+        <meta name="viewport" content="width=device-width">
+        <link href="../../stylesheets/docs-9b3ec880.css" media="screen" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="//use.typekit.net/ycm5ipv.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <!--[if lt IE 9]><script src="js/vendor/selectivizr-1.0.2.min.js"></script><![endif]-->
+        <script src="../../javascripts/header-443c0a2a.js" type="text/javascript"></script>
+
+        <link rel="author" href="humans.txt">
+        <link rel="publisher" href="https://plus.google.com/101060306397560578875/">
+        <meta name="twitter:card" value="Make your backbone applications dance with a composite application architecture">
+        <meta name="twitter:site" value="@marionettejs">
+        <meta property="og:site_name" content="Marionette.js – Make your backbone applications dance with a composite application architecture!">
+        <meta property="og:image" content="http://marionettejs.com/images/og-standard.jpg">
+        <meta property="og:url" content="http://marionettejs.com/">
+        <meta property="og:description" content="">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+        <script src="/downloads/backbone.marionette.js"></script>
+        <script src="../../javascripts/docs-7c87f248.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="docs">
+          <nav class="docs__sidebar">
+            <h3>Marionette API</h3>
+            <ul>
+              <li><a href="marionette.application">Application</a></li>
+              <li><a href="marionette.application.module">Application.module</a></li>
+              <li><a href="marionette.approuter">AppRouter</a></li>
+              <li><a href="marionette.behavior">Behavior</a></li>
+              <li><a href="marionette.behaviors">Behaviors</a></li>
+              <li><a href="marionette.callbacks">Callbacks</a></li>
+              <li><a href="marionette.collectionview">CollectionView</a></li>
+              <li><a href="marionette.compositeview">CompositeView</a></li>
+              <li><a href="marionette.configuration">Configuration</a></li>
+              <li><a href="marionette.controller">Controller</a></li>
+              <li><a href="marionette.functions">Functions</a></li>
+              <li><a href="marionette.itemview">ItemView</a></li>
+              <li><a href="marionette.layout">Layout</a></li>
+              <li><a href="marionette.region">Region</a></li>
+              <li><a href="marionette.regionmanager">RegionManager</a></li>
+              <li><a href="marionette.renderer">Renderer</a></li>
+              <li><a href="marionette.templatecache">TemplateCache</a></li>
+              <li><a href="marionette.view">View</a></li>
+            </ul>
+          </nav>
+          <div class="docs__content">
+            <h1 id="marionette.layout">Marionette.Layout</h1>
+
+<p>A <code>Layout</code> is a hybrid of an <code>ItemView</code> and a collection of <code>Region</code> objects. They
+are ideal for rendering application layouts with multiple sub-regions
+managed by specified region managers.</p>
+
+<p>A layout can also act as a composite-view to aggregate multiple
+views and sub-application areas of the screen allowing applications to
+attach multiple region managers to dynamically rendered HTML.</p>
+
+<p>You can create complex views by nesting layout managers within <code>Regions</code>.</p>
+
+<p>For a more in-depth discussion on Layouts, see the blog post
+<a href="http://lostechies.com/derickbailey/2012/03/22/managing-layouts-and-nested-views-with-backbone-marionette/">Manage Layouts And Nested Views With Backbone.Marionette</a></p>
+
+<p>Please see
+<a href="marionette.itemview.md">the Marionette.ItemView documentation</a>
+for more information on available features and functionality.</p>
+
+<p>Additionally, interactions with Marionette.Region
+will provide features such as <code>onShow</code> callbacks, etc. Please see
+<a href="marionette.region.md">the Region documentation</a> for more information.</p>
+
+<h2 id="documentation-index">Documentation Index</h2>
+
+<ul>
+<li><a href="#basic-usage">Basic Usage</a></li>
+<li><a href="#region-availability">Region Availability</a></li>
+<li><a href="#re-rendering-a-layout">Re-Rendering A Layout</a>
+
+<ul>
+<li><a href="#avoid-re-rendering-the-entire-layout">Avoid Re-Rendering The Entire Layout</a></li>
+</ul></li>
+<li><a href="#nested-layouts-and-views">Nested Layouts And Views</a></li>
+<li><a href="#closing-a-layout">Closing A Layout</a></li>
+<li><a href="#custom-region-type">Custom Region Type</a></li>
+<li><a href="#region-naming">Region Naming</a></li>
+</ul>
+
+<h2 id="basic-usage">Basic Usage</h2>
+
+<p>The <code>Layout</code> extends directly from <code>ItemView</code> and adds the ability
+to specify <code>regions</code> which become <code>Region</code> instances that are attached
+to the layout.</p>
+<pre class="highlight html"><span class="nt">&lt;script </span><span class="na">id=</span><span class="s">&quot;layout-template&quot;</span> <span class="na">type=</span><span class="s">&quot;text/template&quot;</span><span class="nt">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">section</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">navigation</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;menu&quot;</span><span class="o">&gt;</span><span class="p">...</span><span class="o">&lt;</span><span class="sr">/</span><span class="err">navigation&gt;</span>
+    <span class="o">&lt;</span><span class="nx">article</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;content&quot;</span><span class="o">&gt;</span><span class="p">...</span><span class="o">&lt;</span><span class="sr">/</span><span class="err">article&gt;</span>
+  <span class="o">&lt;</span><span class="sr">/</span><span class="err">section&gt;</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre><pre class="highlight javascript"><span class="nx">AppLayout</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Layout</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">&quot;#layout-template&quot;</span><span class="p">,</span>
+
+  <span class="na">regions</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">menu</span><span class="p">:</span> <span class="s2">&quot;#menu&quot;</span><span class="p">,</span>
+    <span class="na">content</span><span class="p">:</span> <span class="s2">&quot;#content&quot;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">layout</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AppLayout</span><span class="p">();</span>
+<span class="nx">layout</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+</pre>
+<p>Once you&rsquo;ve rendered the layout, you now have direct access
+to all of the specified regions as region managers.</p>
+<pre class="highlight javascript"><span class="nx">layout</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="k">new</span> <span class="nx">MenuView</span><span class="p">());</span>
+
+<span class="nx">layout</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="k">new</span> <span class="nx">MainContentView</span><span class="p">());</span>
+</pre>
+<h3 id="specifying-regions-as-a-function">Specifying Regions As A Function</h3>
+
+<p>Regions can be specified on a Layout using a function that returns
+an object with the region definitions. The returned object follow the
+same rules for defining a region, as outlined above.</p>
+<pre class="highlight javascript"><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Layout</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">// ...
+</span>
+  <span class="nl">regions</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">){</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">fooRegion</span><span class="p">:</span> <span class="s2">&quot;#foo-element&quot;</span>
+    <span class="p">};</span>
+  <span class="p">},</span>
+
+  <span class="c1">// ...
+</span><span class="p">});</span>
+</pre>
+<p>Note that the function recieves the view&rsquo;s <code>options</code> arguments that
+were passed in to the view&rsquo;s constructor. <code>this.options</code> is not yet
+available when the regions are first initialized, so the options
+must be accessed through this parameter.</p>
+
+<h2 id="region-availability">Region Availability</h2>
+
+<p>Any defined regions within a layout will be available to the
+layout or any calling code immediately after instantiating the
+layout. This allows a layout to be attached to an existing
+DOM element in an HTML page, without the need to call a render
+method or anything else, to create the regions.</p>
+
+<p>However, a region will only be able to populate itself if the
+layout has access to the elements specified within the region
+definitions. That is, if your view has not yet rendered, your
+regions may not be able to find the element that you&rsquo;ve
+specified for them to manage. In that scenario, using the
+region will result in no changes to the DOM.</p>
+
+<h2 id="re-rendering-a-layout">Re-Rendering A Layout</h2>
+
+<p>A layout can be rendered as many times as needed, but renders
+after the first one behave differently than the initial render.</p>
+
+<p>The first time a layout is rendered, nothing special happens. It just
+delegates to the <code>ItemView</code> prototype to do the render. After the
+first render has happened, though, the render function is modified to
+account for re-rendering with regions in the layout.</p>
+
+<p>After the first render, all subsequent renders will force every
+region to close by calling the <code>close</code> method on them. This will
+force every view in the region, and sub-views if any, to be closed
+as well. Once the regions have been closed, the regions will be
+reset so that they are no longer referencing the element of the previous
+layout render.</p>
+
+<p>Then after the Layout is finished re-rendering itself,
+showing a view in the layout&rsquo;s regions will cause the regions to attach
+themselves to the new elements in the layout.</p>
+
+<h3 id="avoid-re-rendering-the-entire-layout">Avoid Re-Rendering The Entire Layout</h3>
+
+<p>There are times when re-rendering the entire layout is necessary. However,
+due to the behavior described above, this can cause a large amount of
+work to be needed in order to fully restore the layout and all of the
+views that the layout is displaying.</p>
+
+<p>Therefore, it is suggested that you avoid re-rendering the entire
+layout unless absolutely necessary. Instead, if you are binding the
+layout&rsquo;s template to a model and need to update portions of the layout,
+you should listen to the model&rsquo;s &ldquo;change&rdquo; events and only update the
+neccesary DOM elements.</p>
+
+<h2 id="nested-layouts-and-views">Nested Layouts And Views</h2>
+
+<p>Since the <code>Layout</code> extends directly from <code>ItemView</code>, it
+has all of the core functionality of an item view. This includes
+the methods necessary to be shown within an existing region manager.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Application</span><span class="p">();</span>
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">addRegions</span><span class="p">({</span>
+  <span class="na">mainRegion</span><span class="p">:</span> <span class="s2">&quot;#main&quot;</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">layout</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AppLayout</span><span class="p">();</span>
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">mainRegion</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">layout</span><span class="p">);</span>
+
+<span class="nx">layout</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="k">new</span> <span class="nx">MenuView</span><span class="p">());</span>
+</pre>
+<p>You can nest layouts into region managers as deeply as you want.
+This provides for a well organized, nested view structure.</p>
+
+<h2 id="closing-a-layout">Closing A Layout</h2>
+
+<p>When you are finished with a layout, you can call the
+<code>close</code> method on it. This will ensure that all of the region managers
+within the layout are closed correctly, which in turn
+ensures all of the views shown within the regions are closed correctly.</p>
+
+<p>If you are showing a layout within a parent region manager, replacing
+the layout with another view or another layout will close the current
+one, the same it will close a view.</p>
+
+<p>All of this ensures that layouts and the views that they
+contain are cleaned up correctly.</p>
+
+<h2 id="custom-region-type">Custom Region Type</h2>
+
+<p>If you have the need to replace the <code>Region</code> with a region class of
+your own implementation, you can specify an alternate class to use
+with the <code>regionType</code> property of the <code>Layout</code>.</p>
+<pre class="highlight javascript"><span class="nx">MyLayout</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Layout</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">regionType</span><span class="p">:</span> <span class="nx">SomeCustomRegion</span>
+<span class="p">});</span>
+</pre>
+<p>You can also specify custom <code>Region</code> classes for each <code>region</code>:</p>
+<pre class="highlight javascript"><span class="nx">AppLayout</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Layout</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">&quot;#layout-template&quot;</span><span class="p">,</span>
+
+  <span class="na">regionType</span><span class="p">:</span> <span class="nx">SomeDefaultCustomRegion</span><span class="p">,</span>
+
+  <span class="na">regions</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">menu</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">selector</span><span class="p">:</span> <span class="s2">&quot;#menu&quot;</span><span class="p">,</span>
+      <span class="na">regionType</span><span class="p">:</span> <span class="nx">CustomRegionTypeReference</span>
+    <span class="p">},</span>
+    <span class="na">content</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">selector</span><span class="p">:</span> <span class="s2">&quot;#content&quot;</span><span class="p">,</span>
+      <span class="na">regionType</span><span class="p">:</span> <span class="nx">CustomRegionType2Reference</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h2 id="adding-and-removing-regions">Adding And Removing Regions</h2>
+
+<p>Regions can be added and removed as needed, in a
+Layout instance. Use the following methods:</p>
+
+<ul>
+<li><code>addRegion</code></li>
+<li><code>addRegions</code></li>
+<li><code>removeRegion</code></li>
+</ul>
+
+<p>addRegion:</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">layout</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyLayout</span><span class="p">();</span>
+
+<span class="c1">// ...
+</span>
+<span class="nx">layout</span><span class="p">.</span><span class="nx">addRegion</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">,</span> <span class="s2">&quot;#foo&quot;</span><span class="p">);</span>
+<span class="nx">layout</span><span class="p">.</span><span class="nx">foo</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="k">new</span> <span class="nx">someView</span><span class="p">());</span>
+</pre>
+<p>addRegions:</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">layout</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyLayout</span><span class="p">();</span>
+
+<span class="c1">// ...
+</span>
+<span class="nx">layout</span><span class="p">.</span><span class="nx">addRegions</span><span class="p">({</span>
+  <span class="na">foo</span><span class="p">:</span> <span class="s2">&quot;#foo&quot;</span><span class="p">,</span>
+  <span class="na">bar</span><span class="p">:</span> <span class="s2">&quot;#bar&quot;</span>
+<span class="p">});</span>
+</pre>
+<p>removeRegions:</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">layout</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyLayout</span><span class="p">();</span>
+
+<span class="c1">// ...
+</span>
+<span class="nx">layout</span><span class="p">.</span><span class="nx">removeRegion</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">);</span>
+</pre>
+<p>Any region can be removed, whether it was defined
+in the <code>regions</code> attribute of the region definition,
+or added later.</p>
+
+<p>For more information on using these methods, see
+the <code>regionManager</code> documentation.</p>
+
+<h2 id="region-naming">Region Naming</h2>
+
+<p>A Layouts&#39; Regions are attached directly to the Layout instance with the name of the region
+as the key and the region itself as the value. Because of this, you need to be careful
+to avoid conflicts with existing properties on the Layout when you name your Region.</p>
+
+<p>The prototype chain of Layouts is:</p>
+
+<p><code>Backbone.View &gt; Marionette.View &gt; Marionette.ItemView &gt; Marionette.Layout</code></p>
+
+<p>Consequently, every property on each of those Classes must be avoided as Region names. The most
+common issue people run into is trying to name their Region <em>&ldquo;attributes&rdquo;</em>. Be aware
+that you are <strong>not</strong> able to do this.</p>
+
+<p>The following is an abbreviated list of other names that can&rsquo;t be used as Region names. For a more
+complete list refer to the API documentation for each Class on the prototype chain:</p>
+
+<ul>
+<li>attributes</li>
+<li>constructor</li>
+<li>regionType</li>
+<li>render</li>
+<li>close</li>
+<li>addRegion</li>
+<li>addRegions</li>
+<li>removeRegion</li>
+</ul>
+
+<p><em>Note: this is a known issue that is flagged for being fixed in v2</em></p>
+
+          </div>
+        </div>
+    </body>
+</html>

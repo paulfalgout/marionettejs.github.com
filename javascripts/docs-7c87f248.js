@@ -1,0 +1,1 @@
+$(function(){function r(r){var i=e,s=i.hasOwnProperty(r);return s?i[r]:i[r]=r.replace(n,"$1_$2").toLowerCase().replace(t,"-")}var e={},t=/[ _]/g,n=/([a-z])([A-Z])/g;$("h1, h2, h3, h4, h5, h6").each(function(){var e=$(this),t=e.text(),n=r(t);e.attr("id",n),e.wrap('<a href="#'+n+'"></a>')})});

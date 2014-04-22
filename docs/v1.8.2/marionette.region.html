@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="docs no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="docs no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="docs no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="docs no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Marionette.js</title>
+        <meta content="" name="description">
+        <meta name="viewport" content="width=device-width">
+        <link href="../../stylesheets/docs-9b3ec880.css" media="screen" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="//use.typekit.net/ycm5ipv.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <!--[if lt IE 9]><script src="js/vendor/selectivizr-1.0.2.min.js"></script><![endif]-->
+        <script src="../../javascripts/header-443c0a2a.js" type="text/javascript"></script>
+
+        <link rel="author" href="humans.txt">
+        <link rel="publisher" href="https://plus.google.com/101060306397560578875/">
+        <meta name="twitter:card" value="Make your backbone applications dance with a composite application architecture">
+        <meta name="twitter:site" value="@marionettejs">
+        <meta property="og:site_name" content="Marionette.js – Make your backbone applications dance with a composite application architecture!">
+        <meta property="og:image" content="http://marionettejs.com/images/og-standard.jpg">
+        <meta property="og:url" content="http://marionettejs.com/">
+        <meta property="og:description" content="">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+        <script src="/downloads/backbone.marionette.js"></script>
+        <script src="../../javascripts/docs-7c87f248.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="docs">
+          <nav class="docs__sidebar">
+            <h3>Marionette API</h3>
+            <ul>
+              <li><a href="marionette.application">Application</a></li>
+              <li><a href="marionette.application.module">Application.module</a></li>
+              <li><a href="marionette.approuter">AppRouter</a></li>
+              <li><a href="marionette.behavior">Behavior</a></li>
+              <li><a href="marionette.behaviors">Behaviors</a></li>
+              <li><a href="marionette.callbacks">Callbacks</a></li>
+              <li><a href="marionette.collectionview">CollectionView</a></li>
+              <li><a href="marionette.compositeview">CompositeView</a></li>
+              <li><a href="marionette.configuration">Configuration</a></li>
+              <li><a href="marionette.controller">Controller</a></li>
+              <li><a href="marionette.functions">Functions</a></li>
+              <li><a href="marionette.itemview">ItemView</a></li>
+              <li><a href="marionette.layout">Layout</a></li>
+              <li><a href="marionette.region">Region</a></li>
+              <li><a href="marionette.regionmanager">RegionManager</a></li>
+              <li><a href="marionette.renderer">Renderer</a></li>
+              <li><a href="marionette.templatecache">TemplateCache</a></li>
+              <li><a href="marionette.view">View</a></li>
+            </ul>
+          </nav>
+          <div class="docs__content">
+            <h1 id="marionette.region">Marionette.Region</h1>
+
+<p>Regions provide consistent methods to manage, show and close
+views in your applications and layouts. They use a jQuery selector
+to show your views in the correct place.</p>
+
+<p>Using the <code>Layout</code> class you can create nested regions.</p>
+
+<h2 id="documentation-index">Documentation Index</h2>
+
+<ul>
+<li><a href="#defining-an-application-region">Defining An Application Region</a></li>
+<li><a href="#initialize-a-region-with-an-el">Initialize A Region With An <code>el</code></a></li>
+<li><a href="#basic-use">Basic Use</a></li>
+<li><a href="#showing-a-view">Showing a view</a></li>
+<li><a href="#reset-a-region"><code>reset</code> A Region</a></li>
+<li><a href="#set-how-views-el-is-attached">Set How View&rsquo;s <code>el</code> Is Attached</a></li>
+<li><a href="#attach-existing-view">Attach Existing View</a>
+
+<ul>
+<li><a href="#set-currentview-on-initialization">Set <code>currentView</code> On Initialization</a></li>
+<li><a href="#call-attachview-on-region">Call <code>attachView</code> On Region</a></li>
+</ul></li>
+<li><a href="#region-events-and-callbacks">Region Events And Callbacks</a>
+
+<ul>
+<li><a href="#events-raised-during-show">Events raised during <code>show</code></a></li>
+</ul></li>
+<li><a href="#custom-region-types">Custom Region Types</a>
+
+<ul>
+<li><a href="#attaching-custom-region-types">Attaching Custom Region Types</a></li>
+<li><a href="#instantiate-your-own-region">Instantiate Your Own Region</a></li>
+</ul></li>
+</ul>
+
+<h2 id="defining-an-application-region">Defining An Application Region</h2>
+
+<p>You can add regions to your applications by calling the <code>addRegions</code> method on
+your application instance. This method expects a single hash parameter, with
+named regions and either jQuery selectors or <code>Region</code> objects. You may
+call this method as many times as you like, and it will continue adding regions
+to the app.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">addRegions</span><span class="p">({</span>
+  <span class="na">mainRegion</span><span class="p">:</span> <span class="s2">&quot;#main-content&quot;</span><span class="p">,</span>
+  <span class="na">navigationRegion</span><span class="p">:</span> <span class="s2">&quot;#navigation&quot;</span>
+<span class="p">});</span>
+</pre>
+<p>As soon as you call <code>addRegions</code>, your regions are available on your
+app object. In the above, example <code>MyApp.mainRegion</code> and <code>MyApp.navigationRegion</code>
+would be available for use immediately.</p>
+
+<p>If you specify the same region name twice, the last one in wins.</p>
+
+<p>You can also add regions via <code>Layouts</code>:</p>
+<pre class="highlight javascript"><span class="nx">AppLayout</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Layout</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">&quot;#layout-template&quot;</span><span class="p">,</span>
+
+  <span class="na">regions</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">menu</span><span class="p">:</span> <span class="s2">&quot;#menu&quot;</span><span class="p">,</span>
+    <span class="na">content</span><span class="p">:</span> <span class="s2">&quot;#content&quot;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+<span class="kd">var</span> <span class="nx">layout</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AppLayout</span><span class="p">();</span>
+<span class="nx">layout</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+<span class="nx">layout</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="k">new</span> <span class="nx">MenuView</span><span class="p">());</span>
+<span class="nx">layout</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="k">new</span> <span class="nx">MainContentView</span><span class="p">());</span>
+</pre>
+<h2 id="initialize-a-region-with-an-el">Initialize A Region With An <code>el</code></h2>
+
+<p>You can specify an <code>el</code> for the region to manage at the time
+that the region is instantiated:</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">mgr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Region</span><span class="p">({</span>
+  <span class="na">el</span><span class="p">:</span> <span class="s2">&quot;#someElement&quot;</span>
+<span class="p">});</span>
+</pre>
+<h2 id="basic-use">Basic Use</h2>
+
+<h3 id="showing-a-view">Showing a View</h3>
+
+<p>Once a region is defined, you can call its <code>show</code>
+and <code>close</code> methods to display and shut-down a view:</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">myView</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyView</span><span class="p">();</span>
+
+<span class="c1">// render and display the view
+</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">mainRegion</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">myView</span><span class="p">);</span>
+
+<span class="c1">// closes the current view
+</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">mainRegion</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+</pre>
+<p>If you replace the current view with a new view by calling <code>show</code>,
+by default it will automatically close the previous view.
+You can prevent this behavior by passing <code>{preventClose: true}</code> in the options
+parameter. Several events will also be triggered on the views; see
+<a href="#region-events-and-callbacks">Region Events And Callbacks</a> for details.</p>
+<pre class="highlight javascript"><span class="c1">// Show the first view.
+</span><span class="kd">var</span> <span class="nx">myView</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyView</span><span class="p">();</span>
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">mainRegion</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">myView</span><span class="p">);</span>
+
+<span class="c1">// Replace the view with another. The
+// `close` method is called for you
+</span><span class="kd">var</span> <span class="nx">anotherView</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AnotherView</span><span class="p">();</span>
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">mainRegion</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">anotherView</span><span class="p">);</span>
+
+<span class="c1">// Replace the view with another.
+// Prevent `close` from being called
+</span><span class="kd">var</span> <span class="nx">anotherView2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AnotherView</span><span class="p">();</span>
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">mainRegion</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">anotherView2</span><span class="p">,</span> <span class="p">{</span> <span class="na">preventClose</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
+</pre>
+<p>NOTE: When using <code>preventClose: true</code> you must be careful to cleanup your old views
+manually to prevent memory leaks.</p>
+
+<h3 id="reset-a-region"><code>reset</code> A Region</h3>
+
+<p>A region can be <code>reset</code> at any time. This closes any existing view
+being displayed, and deletes the cached <code>el</code>. The next time the
+region shows a view, the region&rsquo;s <code>el</code> is queried from
+the DOM.</p>
+<pre class="highlight javascript"><span class="nx">myRegion</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
+</pre>
+<p>This is useful when regions are re-used across view
+instances, and in unit testing.</p>
+
+<h3 id="set-how-view&#39;s-el-is-attached">Set How View&rsquo;s <code>el</code> Is Attached</h3>
+
+<p>Override the region&rsquo;s <code>open</code> method to change how the view is attached
+to the DOM. This method receives one parameter - the view to show.</p>
+
+<p>The default implementation of <code>open</code> is:</p>
+<pre class="highlight javascript"><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Region</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">open</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">view</span><span class="p">){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">empty</span><span class="p">().</span><span class="nx">append</span><span class="p">(</span><span class="nx">view</span><span class="p">.</span><span class="nx">el</span><span class="p">);</span>
+<span class="p">}</span>
+</pre>
+<p>This replaces the contents of the region with the view&rsquo;s
+<code>el</code> / content. You can override <code>open</code> for transition effects and more.</p>
+<pre class="highlight javascript"><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Region</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">open</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">view</span><span class="p">){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">hide</span><span class="p">();</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="nx">view</span><span class="p">.</span><span class="nx">el</span><span class="p">);</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">slideDown</span><span class="p">(</span><span class="s2">&quot;fast&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre>
+<p>This example will cause a view to slide down from the top
+of the region, instead of just appearing in place.</p>
+
+<h3 id="attach-existing-view">Attach Existing View</h3>
+
+<p>There are some scenarios where it&rsquo;s desirable to attach an existing
+view to a region , without rendering or showing the view, and
+without replacing the HTML content of the region. For example, SEO and
+accessibiliy often need HTML to be generated by the server, and progressive
+enhancement of the HTML.</p>
+
+<p>There are two ways to accomplish this:</p>
+
+<ul>
+<li>set the <code>currentView</code> in the region&rsquo;s constructor</li>
+<li>call <code>attachView</code> on the region instance</li>
+</ul>
+
+<h4 id="set-currentview-on-initialization">Set <code>currentView</code> On Initialization</h4>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">myView</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyView</span><span class="p">({</span>
+  <span class="na">el</span><span class="p">:</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#existing-view-stuff&quot;</span><span class="p">)</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">region</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Region</span><span class="p">({</span>
+  <span class="na">el</span><span class="p">:</span> <span class="s2">&quot;#content&quot;</span><span class="p">,</span>
+  <span class="na">currentView</span><span class="p">:</span> <span class="nx">myView</span>
+<span class="p">});</span>
+</pre>
+<h4 id="call-attachview-on-region">Call <code>attachView</code> On Region</h4>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">addRegions</span><span class="p">({</span>
+  <span class="na">someRegion</span><span class="p">:</span> <span class="s2">&quot;#content&quot;</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">myView</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyView</span><span class="p">({</span>
+  <span class="na">el</span><span class="p">:</span> <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#existing-view-stuff&quot;</span><span class="p">)</span>
+<span class="p">});</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">someRegion</span><span class="p">.</span><span class="nx">attachView</span><span class="p">(</span><span class="nx">myView</span><span class="p">);</span>
+</pre>
+<h2 id="region-events-and-callbacks">Region Events And Callbacks</h2>
+
+<h3 id="events-raised-during-show:">Events raised during <code>show</code>:</h3>
+
+<p>A region will raise a few events when showing
+and closing views:</p>
+
+<ul>
+<li>&ldquo;before:show&rdquo; / <code>onBeforeShow</code> - Called on the view instance after the view has been rendered, but before its been displayed.</li>
+<li>&ldquo;before:show&rdquo; / <code>onBeforeShow</code> - Called on the region instance after the view has been rendered, but before its been displayed.</li>
+<li>&ldquo;show&rdquo; / <code>onShow</code> - Called on the view instance when the view has been rendered and displayed.</li>
+<li>&ldquo;show&rdquo; / <code>onShow</code> - Called on the region instance when the view has been rendered and displayed.</li>
+<li>&ldquo;close&rdquo; / <code>onClose</code> - Called when the view has been closed.</li>
+</ul>
+
+<p>These events can be used to run code when your region
+opens and closes views.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">mainRegion</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;before:show&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">view</span><span class="p">){</span>
+  <span class="c1">// manipulate the `view` or do something extra
+</span>  <span class="c1">// with the region via `this`
+</span><span class="p">});</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">mainRegion</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;show&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">view</span><span class="p">){</span>
+  <span class="c1">// manipulate the `view` or do something extra
+</span>  <span class="c1">// with the region via `this`
+</span><span class="p">});</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">mainRegion</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;close&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">view</span><span class="p">){</span>
+  <span class="c1">// manipulate the `view` or do something extra
+</span>  <span class="c1">// with the region via `this`
+</span><span class="p">});</span>
+
+<span class="nx">MyRegion</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Region</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">// ...
+</span>
+  <span class="nl">onBeforeShow</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">view</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// the `view` has not been shown yet
+</span>  <span class="p">},</span>
+
+  <span class="nl">onShow</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">view</span><span class="p">){</span>
+    <span class="c1">// the `view` has been shown
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">onBeforeShow</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// called before the view has been shown
+</span>  <span class="p">},</span>
+  <span class="na">onShow</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// called when the view has been shown
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h2 id="custom-region-types">Custom Region Types</h2>
+
+<p>You can define a custom region by extending from
+<code>Region</code>. This allows you to create new functionality,
+or provide a base set of functionality for your app.</p>
+
+<h3 id="attaching-custom-region-types">Attaching Custom Region Types</h3>
+
+<p>Once you define a region type, you can attach the
+new region type by specifying the region type as the
+value. In this case, <code>addRegions</code> expects the constructor itself, not an instance.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">FooterRegion</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Region</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">el</span><span class="p">:</span> <span class="s2">&quot;#footer&quot;</span>
+<span class="p">});</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">addRegions</span><span class="p">({</span>
+  <span class="na">footerRegion</span><span class="p">:</span> <span class="nx">FooterRegion</span>
+<span class="p">});</span>
+</pre>
+<p>You can also specify a selector for the region by using
+an object literal for the configuration.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">FooterRegion</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Region</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">el</span><span class="p">:</span> <span class="s2">&quot;#footer&quot;</span>
+<span class="p">});</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">addRegions</span><span class="p">({</span>
+  <span class="na">footerRegion</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">selector</span><span class="p">:</span> <span class="s2">&quot;#footer&quot;</span><span class="p">,</span>
+    <span class="na">regionType</span><span class="p">:</span> <span class="nx">FooterRegion</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>Note that a region must have an element to attach itself to. If you
+do not specify a selector when attaching the region instance to your
+Application or Layout, the region must provide an <code>el</code> either in its
+definition or constructor options.</p>
+
+<h3 id="instantiate-your-own-region">Instantiate Your Own Region</h3>
+
+<p>There may be times when you want to add a region to your
+application after your app is up and running. To do this, you&rsquo;ll
+need to extend from <code>Region</code> as shown above and then use
+that constructor function on your own:</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">SomeRegion</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Region</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">el</span><span class="p">:</span> <span class="s2">&quot;#some-div&quot;</span><span class="p">,</span>
+
+  <span class="na">initialize</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">){</span>
+    <span class="c1">// your init code, here
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">someRegion</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">SomeRegion</span><span class="p">();</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">someRegion</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">someView</span><span class="p">);</span>
+</pre>
+<p>You can optionally add an <code>initialize</code> function to your Region
+definition as shown in this example. It receives the <code>options</code>
+that were passed to the constructor of the Region, similar to
+a Backbone.View.</p>
+
+          </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="docs no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="docs no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="docs no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="docs no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Marionette.js</title>
+        <meta content="" name="description">
+        <meta name="viewport" content="width=device-width">
+        <link href="../../stylesheets/docs-9b3ec880.css" media="screen" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="//use.typekit.net/ycm5ipv.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <!--[if lt IE 9]><script src="js/vendor/selectivizr-1.0.2.min.js"></script><![endif]-->
+        <script src="../../javascripts/header-443c0a2a.js" type="text/javascript"></script>
+
+        <link rel="author" href="humans.txt">
+        <link rel="publisher" href="https://plus.google.com/101060306397560578875/">
+        <meta name="twitter:card" value="Make your backbone applications dance with a composite application architecture">
+        <meta name="twitter:site" value="@marionettejs">
+        <meta property="og:site_name" content="Marionette.js – Make your backbone applications dance with a composite application architecture!">
+        <meta property="og:image" content="http://marionettejs.com/images/og-standard.jpg">
+        <meta property="og:url" content="http://marionettejs.com/">
+        <meta property="og:description" content="">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+        <script src="/downloads/backbone.marionette.js"></script>
+        <script src="../../javascripts/docs-7c87f248.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="docs">
+          <nav class="docs__sidebar">
+            <h3>Marionette API</h3>
+            <ul>
+              <li><a href="marionette.application">Application</a></li>
+              <li><a href="marionette.application.module">Application.module</a></li>
+              <li><a href="marionette.approuter">AppRouter</a></li>
+              <li><a href="marionette.behavior">Behavior</a></li>
+              <li><a href="marionette.behaviors">Behaviors</a></li>
+              <li><a href="marionette.callbacks">Callbacks</a></li>
+              <li><a href="marionette.collectionview">CollectionView</a></li>
+              <li><a href="marionette.compositeview">CompositeView</a></li>
+              <li><a href="marionette.configuration">Configuration</a></li>
+              <li><a href="marionette.controller">Controller</a></li>
+              <li><a href="marionette.functions">Functions</a></li>
+              <li><a href="marionette.itemview">ItemView</a></li>
+              <li><a href="marionette.layout">Layout</a></li>
+              <li><a href="marionette.region">Region</a></li>
+              <li><a href="marionette.regionmanager">RegionManager</a></li>
+              <li><a href="marionette.renderer">Renderer</a></li>
+              <li><a href="marionette.templatecache">TemplateCache</a></li>
+              <li><a href="marionette.view">View</a></li>
+            </ul>
+          </nav>
+          <div class="docs__content">
+            <h1 id="marionette.behaviors">Marionette.Behaviors</h1>
+
+<p>&lsquo;Marionette.Behaviors&rsquo; is a utility class that takes care of glueing your <code>behavior</code> instances to their given <code>View</code>.
+The most important part of this class is that you <strong>MUST</strong> override the class level <code>behaviorsLookup</code> method for things to work properly.</p>
+
+<h2 id="documentation-index">Documentation Index</h2>
+
+<ul>
+<li><a href="#api">API</a>
+
+<ul>
+<li><a href="#behaviorsLookup">Behaviors Lookup</a></li>
+<li><a href="#getBehaviorClass">getBehaviorClass</a></li>
+<li><a href="#behaviorClass">behaviorClass</a></li>
+</ul></li>
+</ul>
+
+<h2 id="api">API</h2>
+
+<p>There are two class level methods that you can override on the <code>Behaviors</code> class. The rest of the class is tied to under the hood implementation details of views.</p>
+
+<h3 id="behaviorslookup">behaviorsLookup</h3>
+
+<p>This method defines where your behavior classes are stored. A simple implementation might look something like this.</p>
+<pre class="highlight javascript"><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Behaviors</span><span class="p">.</span><span class="nx">behaviorsLookup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nx">Behaviors</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+<p>By default the behaviors are looked up by their key value in a given views behavior hash.</p>
+
+<p>In this sample (using the default <code>getBehaviorClass</code> implementation) your code will expect the following behaviors to be present in <code>window.Behaviors.CloseWarn</code> and <code>window.Behaviors.ToolTip</code></p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="na">behaviors</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">CloseWarn</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">message</span><span class="p">:</span> <span class="s2">&quot;you are closing all your data is now gone!&quot;</span>
+        <span class="p">},</span>
+        <span class="na">ToolTip</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">text</span><span class="p">:</span> <span class="s2">&quot;what a nice mouse you have&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h3 id="getbehaviorclass">getBehaviorClass</h3>
+
+<p>This method has a default implementation that is simple to override. It is responsible for the lookup of single behavior from within the <code>Behaviors.behaviorsLookup</code> or elsewhere.</p>
+<pre class="highlight javascript"><span class="nx">getBehaviorClass</span><span class="err">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">BehaviorClass</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">options</span><span class="p">.</span><span class="nx">BehaviorClass</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">Behaviors</span><span class="p">.</span><span class="nx">behaviorsLookup</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+<span class="p">}</span>
+</pre>
+<h3 id="behaviorclass">behaviorClass</h3>
+
+<p>This property lets you pass a <code>class</code> in for the <code>behavior</code> to use (bypassing the normal key based lookup). This is nice to have when the behavior is a dependency of the view in <a href="http://requirejs.org/">requirejs</a>. Properties passed in this way will be used in <code>getBehaviorClass</code>.</p>
+<pre class="highlight javascript"><span class="nx">define</span><span class="p">([</span><span class="s1">'lib/tooltip'</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Tooltip</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">View</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+     <span class="na">behaviors</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">Tooltip</span><span class="p">:</span> <span class="p">{</span>
+          <span class="na">behaviorClass</span><span class="p">:</span> <span class="nx">Tooltip</span><span class="p">,</span>
+          <span class="na">message</span><span class="p">:</span> <span class="s2">&quot;hello world&quot;</span>
+        <span class="p">}</span>
+     <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre>
+          </div>
+        </div>
+    </body>
+</html>

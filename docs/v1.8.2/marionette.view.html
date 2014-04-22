@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="docs no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="docs no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="docs no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="docs no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Marionette.js</title>
+        <meta content="" name="description">
+        <meta name="viewport" content="width=device-width">
+        <link href="../../stylesheets/docs-9b3ec880.css" media="screen" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="//use.typekit.net/ycm5ipv.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <!--[if lt IE 9]><script src="js/vendor/selectivizr-1.0.2.min.js"></script><![endif]-->
+        <script src="../../javascripts/header-443c0a2a.js" type="text/javascript"></script>
+
+        <link rel="author" href="humans.txt">
+        <link rel="publisher" href="https://plus.google.com/101060306397560578875/">
+        <meta name="twitter:card" value="Make your backbone applications dance with a composite application architecture">
+        <meta name="twitter:site" value="@marionettejs">
+        <meta property="og:site_name" content="Marionette.js – Make your backbone applications dance with a composite application architecture!">
+        <meta property="og:image" content="http://marionettejs.com/images/og-standard.jpg">
+        <meta property="og:url" content="http://marionettejs.com/">
+        <meta property="og:description" content="">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+        <script src="/downloads/backbone.marionette.js"></script>
+        <script src="../../javascripts/docs-7c87f248.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="docs">
+          <nav class="docs__sidebar">
+            <h3>Marionette API</h3>
+            <ul>
+              <li><a href="marionette.application">Application</a></li>
+              <li><a href="marionette.application.module">Application.module</a></li>
+              <li><a href="marionette.approuter">AppRouter</a></li>
+              <li><a href="marionette.behavior">Behavior</a></li>
+              <li><a href="marionette.behaviors">Behaviors</a></li>
+              <li><a href="marionette.callbacks">Callbacks</a></li>
+              <li><a href="marionette.collectionview">CollectionView</a></li>
+              <li><a href="marionette.compositeview">CompositeView</a></li>
+              <li><a href="marionette.configuration">Configuration</a></li>
+              <li><a href="marionette.controller">Controller</a></li>
+              <li><a href="marionette.functions">Functions</a></li>
+              <li><a href="marionette.itemview">ItemView</a></li>
+              <li><a href="marionette.layout">Layout</a></li>
+              <li><a href="marionette.region">Region</a></li>
+              <li><a href="marionette.regionmanager">RegionManager</a></li>
+              <li><a href="marionette.renderer">Renderer</a></li>
+              <li><a href="marionette.templatecache">TemplateCache</a></li>
+              <li><a href="marionette.view">View</a></li>
+            </ul>
+          </nav>
+          <div class="docs__content">
+            <h1 id="marionette.view">Marionette.View</h1>
+
+<p>Marionette has a base <code>Marionette.View</code> type that other views extend from.
+This base view provides some common and core functionality for
+other views to take advantage of.</p>
+
+<p><strong>Note:</strong> The <code>Marionette.View</code> type is not intended to be
+used directly. It exists as a base view for other view types
+to be extended from, and to provide a common location for
+behaviors that are shared across all views.</p>
+
+<h2 id="documentation-index">Documentation Index</h2>
+
+<ul>
+<li><a href="#binding-to-view-events">Binding To View Events</a></li>
+<li><a href="#view-onshow">View onShow</a></li>
+<li><a href="#view-close">View close</a></li>
+<li><a href="#view-onbeforeclose">View onBeforeClose</a></li>
+<li><a href="#view-domrefresh--ondomrefresh-event">View &ldquo;dom:refresh&rdquo; / onDomRefresh event</a></li>
+<li><a href="#viewtriggers">View.triggers</a></li>
+<li><a href="#viewevents">View.events</a></li>
+<li><a href="#viewmodelevents-and-viewcollectionevents">View.modelEvents and View.collectionEvents</a></li>
+<li><a href="#viewserializedata">View.serializeData</a></li>
+<li><a href="#viewbinduielements">View.bindUIElements</a></li>
+<li><a href="#viewtemplatehelpers">View.templateHelpers</a>
+
+<ul>
+<li><a href="#basic-example">Basic Example</a></li>
+<li><a href="#accessing-data-within-the-helpers">Accessing Data Within The Helpers</a></li>
+<li><a href="#object-or-function-as-templatehelpers">Object Or Function As <code>templateHelpers</code></a></li>
+</ul></li>
+<li><a href="#change-which-template-is-rendered-for-a-view">Change Which Template Is Rendered For A View</a></li>
+</ul>
+
+<h2 id="binding-to-view-events">Binding To View Events</h2>
+
+<p>Marionette.View extends <code>Backbone.View</code>. It is recommended that you use
+the <code>listenTo</code> method to bind model, collection, or other events from Backbone
+and Marionette objects.</p>
+<pre class="highlight javascript"><span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">initialize</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">listenTo</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">,</span> <span class="s2">&quot;change:foo&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">modelChanged</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">listenTo</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">collection</span><span class="p">,</span> <span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">modelAdded</span><span class="p">);</span>
+  <span class="p">},</span>
+
+  <span class="na">modelChanged</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">model</span><span class="p">,</span> <span class="nx">value</span><span class="p">){</span>
+  <span class="p">},</span>
+
+  <span class="na">modelAdded</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">model</span><span class="p">){</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>The context (<code>this</code>) will automatically be set to the view. You can
+optionally set the context by using <code>_.bind</code>.</p>
+<pre class="highlight javascript"><span class="c1">// Force the context of the &quot;reconcileCollection&quot; callback method to be the collection
+// itself, for this event handler only (does not affect any other use of the
+// &quot;reconcileCollection&quot; method)
+</span><span class="k">this</span><span class="p">.</span><span class="nx">listenTo</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">collection</span><span class="p">,</span> <span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">reconcileCollection</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">collection</span><span class="p">));</span>
+</pre>
+<h2 id="view-onshow">View onShow</h2>
+
+<ul>
+<li>&ldquo;show&rdquo; / <code>onShow</code> - Called on the view instance when the view has been rendered and displayed.</li>
+</ul>
+
+<p>This event can be used to react to when a view has been shown via a <a href="marionette.region.md">region</a>.
+All <code>views</code> that inherit from the base <code>Marionette.View</code> class have this functionality. <code>ItemView</code>, &lsquo;CollectionView&rsquo;, &lsquo;CompositeView&rsquo;, &lsquo;Layout&rsquo;</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">onShow</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// react to when a view has been shown
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>A common use case for the <code>onShow</code> method is to use it to add children views.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">LayoutView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Layout</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+   <span class="na">regions</span><span class="p">:</span> <span class="p">{</span>
+     <span class="na">Header</span><span class="p">:</span> <span class="s1">'header'</span><span class="p">,</span>
+     <span class="na">Section</span><span class="p">:</span> <span class="s1">'section'</span>
+   <span class="p">},</span>
+   <span class="na">onShow</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">Header</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="k">new</span> <span class="nx">Header</span><span class="p">());</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">Section</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="k">new</span> <span class="nx">Section</span><span class="p">());</span>
+   <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h2 id="view-close">View close</h2>
+
+<p>View implements a <code>close</code> method, which is called by the region
+managers automatically. As part of the implementation, the following
+are performed:</p>
+
+<ul>
+<li>call an <code>onBeforeClose</code> event on the view, if one is provided</li>
+<li>call an <code>onClose</code> event on the view, if one is provided</li>
+<li>unbind all custom view events</li>
+<li>unbind all DOM events</li>
+<li>remove <code>this.el</code> from the DOM</li>
+<li>unbind all <code>listenTo</code> events</li>
+</ul>
+
+<p>By providing an <code>onClose</code> method in your view definition, you can
+run custom code for your view that is fired after your view has been
+closed and cleaned up. The <code>onClose</code> method will be passed any arguments
+that <code>close</code> was invoked with. This lets you handle any additional clean
+up code without having to override the <code>close</code> method.</p>
+<pre class="highlight javascript"><span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">onClose</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span> <span class="nx">arg2</span><span class="p">){</span>
+    <span class="c1">// custom cleanup or closing code, here
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyView</span><span class="p">();</span>
+<span class="nx">v</span><span class="p">.</span><span class="nx">close</span><span class="p">(</span><span class="nx">arg1</span><span class="p">,</span> <span class="nx">arg2</span><span class="p">);</span>
+</pre>
+<h2 id="view-onbeforeclose">View onBeforeClose</h2>
+
+<p>When closing a view, an <code>onBeforeClose</code> method will be called, if it
+has been provided. It will be passed any arguments that <code>close</code> was
+invoked with. If this method returns <code>false</code>, the view will not
+be closed. Any other return value (including null or undefined) will
+allow the view to be closed.</p>
+<pre class="highlight javascript"><span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+
+  <span class="na">onBeforeClose</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// prevent the view from being closed
+</span>    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+  <span class="p">}</span>
+
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyView</span><span class="p">();</span>
+
+<span class="nx">v</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span> <span class="c1">// view will remain open
+</span></pre>
+<h3 id="view-&quot;dom:refresh&quot;-/-ondomrefresh-event">View &ldquo;dom:refresh&rdquo; / onDomRefresh event</h3>
+
+<p>Triggered after the view has been rendered, has been shown in the DOM via a Marionette.Region, and has been
+re-rendered.</p>
+
+<p>This event / callback is useful for
+<a href="http://lostechies.com/derickbailey/2012/02/20/using-jquery-plugins-and-ui-controls-with-backbone/">DOM-dependent UI plugins</a> such as
+<a href="http://jqueryui.com/">jQueryUI</a> or <a href="http://kendoui.com">KendoUI</a>.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">onDomRefresh</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// manipulate the `el` here. it's already
+</span>    <span class="c1">// been rendered, and is full of the view's
+</span>    <span class="c1">// HTML, ready to go.
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>For more information about integration Marionette w/ KendoUI (also applicable to jQueryUI and other UI
+widget suites), see <a href="http://www.kendoui.com/blogs/teamblog/posts/12-11-26/backbone_and_kendo_ui_a_beautiful_combination.aspx">this blog post on KendoUI + Backbone</a>.</p>
+
+<h2 id="view.events">View.events</h2>
+
+<p>Since Views extend from backbone`s view class, you gain the benefits of the <a href="http://backbonejs.org/#View-delegateEvents">events hash</a>.</p>
+
+<p>Some preprocessing sugar is added on top to add the ability to cross utilize the <code>ui</code> hash.</p>
+<pre class="highlight javascript"><span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">// ...
+</span>
+  <span class="nl">ui</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;cat&quot;</span><span class="err">:</span> <span class="s2">&quot;.dog&quot;</span>
+  <span class="p">},</span>
+
+  <span class="nl">events</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;click @ui.cat&quot;</span><span class="err">:</span> <span class="s2">&quot;bark&quot;</span> <span class="c1">//is the same as &quot;click .dog&quot;:
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h2 id="view.triggers">View.triggers</h2>
+
+<p>Views can define a set of <code>triggers</code> as a hash, which will
+convert a DOM event into a <code>view.triggerMethod</code> call.</p>
+
+<p>The left side of the hash is a standard Backbone.View DOM
+event configuration, while the right side of the hash is the
+view event that you want to trigger from the view.</p>
+<pre class="highlight javascript"><span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">// ...
+</span>
+  <span class="nl">triggers</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;click .do-something&quot;</span><span class="err">:</span> <span class="s2">&quot;something:do:it&quot;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">view</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyView</span><span class="p">();</span>
+<span class="nx">view</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+
+<span class="nx">view</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;something:do:it&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">){</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;I DID IT!&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// &quot;click&quot; the 'do-something' DOM element to
+// demonstrate the DOM event conversion
+</span><span class="nx">view</span><span class="p">.</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.do-something&quot;</span><span class="p">).</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">);</span>
+</pre>
+<p>The result of this is an alert box that says, &ldquo;I DID IT!&rdquo;</p>
+
+<p>By default all triggers are stopped with <code>preventDefault</code> and <code>stopPropagation</code> methods. But you can manually configure the triggers using hash instead of event name. Example below triggers an event and prevents default browser behaviour using <code>preventDefault</code> method.
+<code>js
+Backbone.Marionette.CompositeView.extend({
+  triggers: {
+    &quot;click .do-something&quot;: {
+      event: &quot;something:do:it&quot;,
+      preventDefault: true, // this param is optional and will default to true
+      stopPropagation: false
+    }
+  }
+});
+</code></p>
+
+<p>You can also specify the <code>triggers</code> as a function that
+returns a hash of trigger configurations</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CompositeView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">triggers</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="s2">&quot;click .that-thing&quot;</span><span class="err">:</span> <span class="s2">&quot;that:i:sent:you&quot;</span>
+    <span class="p">};</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>Trigger keys can be configured to cross utilize the <code>ui</code> hash.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">ui</span><span class="p">:</span> <span class="p">{</span>
+     <span class="s1">'monkey'</span><span class="err">:</span> <span class="s1">'.guybrush'</span>
+  <span class="p">},</span>
+  <span class="na">triggers</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">'click @ui.monkey'</span><span class="err">:</span> <span class="s1">'see:LeChuck'</span> <span class="c1">// equivalent of &quot;click .guybrush&quot;
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>Triggers work with all View types that extend from the base
+Marionette.View.</p>
+
+<h3 id="trigger-handler-arguments">Trigger Handler Arguments</h3>
+
+<p>A <code>trigger</code> event handler will receive a single argument that
+includes the following:</p>
+
+<ul>
+<li>view</li>
+<li>model</li>
+<li>collection</li>
+</ul>
+
+<p>These properties match the <code>view</code>, <code>model</code>, and <code>collection</code> properties of the view that triggered the event.</p>
+<pre class="highlight javascript"><span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">// ...
+</span>
+  <span class="nl">triggers</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;click .do-something&quot;</span><span class="err">:</span> <span class="s2">&quot;some:event&quot;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">view</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyView</span><span class="p">();</span>
+
+<span class="nx">view</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;some:event&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">args</span><span class="p">){</span>
+  <span class="nx">args</span><span class="p">.</span><span class="nx">view</span><span class="p">;</span> <span class="c1">// =&gt; the view instance that triggered the event
+</span>  <span class="nx">args</span><span class="p">.</span><span class="nx">model</span><span class="p">;</span> <span class="c1">// =&gt; the view.model, if one was set on the view
+</span>  <span class="nx">args</span><span class="p">.</span><span class="nx">collection</span><span class="p">;</span> <span class="c1">// =&gt; the view.collection, if one was set on the view
+</span><span class="p">});</span>
+</pre>
+<p>Having access to these allows more flexibility in handling events from
+multiple views. For example, a tab control or expand/collapse widget such
+as a panel bar could trigger the same event from many different views
+and be handled with a single function.</p>
+
+<h2 id="view.modelevents-and-view.collectionevents">View.modelEvents and View.collectionEvents</h2>
+
+<p>Similar to the <code>events</code> hash, views can specify a configuration
+hash for collections and models. The left side is the event on
+the model or collection, and the right side is the name of the
+method on the view.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CompositeView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+
+  <span class="na">modelEvents</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;change:name&quot;</span><span class="err">:</span> <span class="s2">&quot;nameChanged&quot;</span> <span class="c1">// equivalent to view.listenTo(view.model, &quot;change:name&quot;, view.nameChanged, view)
+</span>  <span class="p">},</span>
+
+  <span class="na">collectionEvents</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;add&quot;</span><span class="err">:</span> <span class="s2">&quot;itemAdded&quot;</span> <span class="c1">// equivalent to view.listenTo(view.collection, &quot;add&quot;, view.itemAdded, view)
+</span>  <span class="p">},</span>
+
+  <span class="c1">// ... event handler methods
+</span>  <span class="na">nameChanged</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+  <span class="na">itemAdded</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+
+<span class="p">})</span>
+</pre>
+<p>These will use the memory safe <code>listenTo</code>, and will set the context
+(the value of <code>this</code>) in the handler to be the view. Events are
+bound at the time of instantiation, and an exception will be thrown
+if the handlers on the view do not exist.</p>
+
+<p>The <code>modelEvents</code> and <code>collectionEvents</code> will be bound and
+unbound with the Backbone.View <code>delegateEvents</code> and <code>undelegateEvents</code>
+method calls. This allows the view to be re-used and have
+the model and collection events re-bound.</p>
+
+<h3 id="multiple-callbacks">Multiple Callbacks</h3>
+
+<p>Multiple callback functions can be specified by separating them with a
+space.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CompositeView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+
+  <span class="na">modelEvents</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;change:name&quot;</span><span class="err">:</span> <span class="s2">&quot;nameChanged thatThing&quot;</span>
+  <span class="p">},</span>
+
+  <span class="na">nameChanged</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span> <span class="p">},</span>
+
+  <span class="na">thatThing</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span> <span class="p">},</span>
+<span class="p">});</span>
+</pre>
+<p>This works in both <code>modelEvents</code> and <code>collectionEvents</code>.</p>
+
+<h3 id="callbacks-as-function">Callbacks As Function</h3>
+
+<p>A single function can be declared directly in-line instead of specifying a
+callback via a string method name.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CompositeView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+
+  <span class="na">modelEvents</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;change:name&quot;</span><span class="err">:</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="c1">// handle the name changed event here
+</span>    <span class="p">}</span>
+  <span class="p">}</span>
+
+<span class="p">});</span>
+</pre>
+<p>This works for both <code>modelEvents</code> and <code>collectionEvents</code>.</p>
+
+<h3 id="event-configuration-as-function">Event Configuration As Function</h3>
+
+<p>A function can be used to declare the event configuration as long as
+that function returns a hash that fits the above configuration options.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CompositeView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+
+  <span class="na">modelEvents</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="s2">&quot;change:name&quot;</span><span class="err">:</span> <span class="s2">&quot;someFunc&quot;</span> <span class="p">};</span>
+  <span class="p">}</span>
+
+<span class="p">});</span>
+</pre>
+<p>This works for both <code>modelEvents</code> and <code>collectionEvents</code>.</p>
+
+<h2 id="view.serializedata">View.serializeData</h2>
+
+<p>The <code>serializeData</code> method will serialize a view&rsquo;s model or
+collection - with precedence given to collections. That is,
+if you have both a collection and a model in a view, calling
+the <code>serializeData</code> method will return the serialized
+collection.</p>
+
+<h2 id="view.binduielements">View.bindUIElements</h2>
+
+<p>In several cases you need to access ui elements inside the view
+to retrieve their data or manipulate them. For example you have a
+certain div element you need to show/hide based on some state,
+or other ui element that you wish to set a css class to it.
+Instead of having jQuery selectors hanging around in the view&rsquo;s code
+you can define a <code>ui</code> hash that contains a mapping between the
+ui element&rsquo;s name and its jQuery selector. Afterwards you can simply
+access it via <code>this.ui.elementName</code>.
+See ItemView documentation for examples.</p>
+
+<p>This functionality is provided via the <code>bindUIElements</code> method.
+Since View doesn&rsquo;t implement the render method, then if you directly extend
+from View you will need to invoke this method from your render method.
+In ItemView and CompositeView this is already taken care of.</p>
+
+<h2 id="view.templatehelpers">View.templateHelpers</h2>
+
+<p>There are times when a view&rsquo;s template needs to have some
+logic in it and the view engine itself will not provide an
+easy way to accomplish this. For example, Underscore templates
+do not provide a helper method mechanism while Handlebars
+templates do.</p>
+
+<p>A <code>templateHelpers</code> attribute can be applied to any View object that
+renders a template. When this attribute is present its contents
+will be mixed in to the data object that comes back from the
+<code>serializeData</code> method. This will allow you to create helper methods
+that can be called from within your templates.</p>
+
+<h3 id="basic-example">Basic Example</h3>
+<pre class="highlight html"><span class="nt">&lt;script </span><span class="na">id=</span><span class="s">&quot;my-template&quot;</span> <span class="na">type=</span><span class="s">&quot;text/html&quot;</span><span class="nt">&gt;</span>
+  <span class="nx">I</span> <span class="nx">think</span> <span class="nx">that</span> <span class="o">&lt;%=</span> <span class="nx">showMessage</span><span class="p">()</span> <span class="o">%&gt;</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre><pre class="highlight javascript"><span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">&quot;#my-template&quot;</span><span class="p">,</span>
+
+  <span class="na">templateHelpers</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">showMessage</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; is the coolest!&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+<span class="p">});</span>
+
+<span class="nx">model</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Model</span><span class="p">({</span><span class="na">name</span><span class="p">:</span> <span class="s2">&quot;Backbone.Marionette&quot;</span><span class="p">});</span>
+<span class="nx">view</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyView</span><span class="p">({</span>
+  <span class="na">model</span><span class="p">:</span> <span class="nx">model</span>
+<span class="p">});</span>
+
+<span class="nx">view</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span> <span class="c1">//=&gt; &quot;I think that Backbone.Marionette is the coolest!&quot;;
+</span></pre>
+<p>The <code>templateHelpers</code> can also be provided as a constructor parameter
+for any Marionette view type that supports the helpers.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">// ...
+</span><span class="p">});</span>
+
+<span class="k">new</span> <span class="nx">MyView</span><span class="p">({</span>
+  <span class="na">templateHelpers</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">doFoo</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h3 id="accessing-data-within-the-helpers">Accessing Data Within The Helpers</h3>
+
+<p>In order to access data from within the helper methods, you
+need to prefix the data you need with <code>this</code>. Doing that will
+give you all of the methods and attributes of the serialized
+data object, including the other helper methods.</p>
+<pre class="highlight javascript"><span class="nx">templateHelpers</span><span class="err">:</span> <span class="p">{</span>
+  <span class="na">something</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">return</span> <span class="s2">&quot;Do stuff with &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s2">&quot; because it's awesome.&quot;</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+<h3 id="object-or-function-as-templatehelpers">Object Or Function As <code>templateHelpers</code></h3>
+
+<p>You can specify an object literal (as shown above), a reference
+to an object literal, or a function as the <code>templateHelpers</code>.</p>
+
+<p>If you specify a function, the function will be invoked
+with the current view instance as the context of the
+function. The function must return an object that can be
+mixed in to the data for the view.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">templateHelpers</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">foo</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h2 id="change-which-template-is-rendered-for-a-view">Change Which Template Is Rendered For A View</h2>
+
+<p>There may be some cases where you need to change the template that is
+used for a view, based on some simple logic such as the value of a
+specific attribute in the view&rsquo;s model. To do this, you can provide
+a <code>getTemplate</code> function on your views and use this to return the
+template that you need.</p>
+<pre class="highlight javascript"><span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">getTemplate</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)){</span>
+      <span class="k">return</span> <span class="s2">&quot;#some-template&quot;</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="s2">&quot;#a-different-template&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>This applies to all view types.</p>
+
+          </div>
+        </div>
+    </body>
+</html>

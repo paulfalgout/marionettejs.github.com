@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="docs no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="docs no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="docs no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="docs no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Marionette.js</title>
+        <meta content="" name="description">
+        <meta name="viewport" content="width=device-width">
+        <link href="../../stylesheets/docs-9b3ec880.css" media="screen" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="//use.typekit.net/ycm5ipv.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <!--[if lt IE 9]><script src="js/vendor/selectivizr-1.0.2.min.js"></script><![endif]-->
+        <script src="../../javascripts/header-443c0a2a.js" type="text/javascript"></script>
+
+        <link rel="author" href="humans.txt">
+        <link rel="publisher" href="https://plus.google.com/101060306397560578875/">
+        <meta name="twitter:card" value="Make your backbone applications dance with a composite application architecture">
+        <meta name="twitter:site" value="@marionettejs">
+        <meta property="og:site_name" content="Marionette.js – Make your backbone applications dance with a composite application architecture!">
+        <meta property="og:image" content="http://marionettejs.com/images/og-standard.jpg">
+        <meta property="og:url" content="http://marionettejs.com/">
+        <meta property="og:description" content="">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+        <script src="/downloads/backbone.marionette.js"></script>
+        <script src="../../javascripts/docs-7c87f248.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="docs">
+          <nav class="docs__sidebar">
+            <h3>Marionette API</h3>
+            <ul>
+              <li><a href="marionette.application">Application</a></li>
+              <li><a href="marionette.application.module">Application.module</a></li>
+              <li><a href="marionette.approuter">AppRouter</a></li>
+              <li><a href="marionette.behavior">Behavior</a></li>
+              <li><a href="marionette.behaviors">Behaviors</a></li>
+              <li><a href="marionette.callbacks">Callbacks</a></li>
+              <li><a href="marionette.collectionview">CollectionView</a></li>
+              <li><a href="marionette.compositeview">CompositeView</a></li>
+              <li><a href="marionette.configuration">Configuration</a></li>
+              <li><a href="marionette.controller">Controller</a></li>
+              <li><a href="marionette.functions">Functions</a></li>
+              <li><a href="marionette.itemview">ItemView</a></li>
+              <li><a href="marionette.layout">Layout</a></li>
+              <li><a href="marionette.region">Region</a></li>
+              <li><a href="marionette.regionmanager">RegionManager</a></li>
+              <li><a href="marionette.renderer">Renderer</a></li>
+              <li><a href="marionette.templatecache">TemplateCache</a></li>
+              <li><a href="marionette.view">View</a></li>
+            </ul>
+          </nav>
+          <div class="docs__content">
+            <h1 id="marionette.compositeview">Marionette.CompositeView</h1>
+
+<p>A <code>CompositeView</code> extends from <code>CollectionView</code> to be used as a
+composite view for scenarios where it should represent both a
+branch and leaf in a tree structure, or for scenarios where a
+collection needs to be rendered within a wrapper template.</p>
+
+<p>Please see
+<a href="marionette.collectionview.md">the Marionette.CollectionView documentation</a>
+for more information on available features and functionality.</p>
+
+<p>Additionally, interactions with Marionette.Region
+will provide features such as <code>onShow</code> callbacks, etc. Please see
+<a href="marionette.region.md">the Region documentation</a> for more information.</p>
+
+<h2 id="example-usage:-tree-view">Example Usage: Tree View</h2>
+
+<p>For example, if you&rsquo;re rendering a treeview control, you may
+want to render a collection view with a model and template so
+that it will show a parent item with children in the tree.</p>
+
+<p>You can specify a <code>modelView</code> to use for the model. If you don&rsquo;t
+specify one, it will default to the <code>Marionette.ItemView</code>.</p>
+<pre class="highlight javascript"><span class="nx">CompositeView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CompositeView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">&quot;#leaf-branch-template&quot;</span>
+<span class="p">});</span>
+
+<span class="k">new</span> <span class="nx">CompositeView</span><span class="p">({</span>
+  <span class="na">model</span><span class="p">:</span> <span class="nx">someModel</span><span class="p">,</span>
+  <span class="na">collection</span><span class="p">:</span> <span class="nx">someCollection</span>
+<span class="p">});</span>
+</pre>
+<p>For more examples, see my blog post on
+<a href="http://lostechies.com/derickbailey/2012/04/05/composite-views-tree-structures-tables-and-more/">using the composite view.</a></p>
+
+<h2 id="documentation-index">Documentation Index</h2>
+
+<ul>
+<li><a href="#composite-model-template">Composite Model <code>template</code></a></li>
+<li><a href="#compositeviews-itemviewcontainer">CompositeView&rsquo;s <code>itemViewContainer</code></a></li>
+<li><a href="#compositeviews-appendhtml">CompositeView&rsquo;s <code>appendHtml</code></a></li>
+<li><a href="#recursive-by-default">Recursive By Default</a></li>
+<li><a href="#model-and-collection-rendering">Model And Collection Rendering</a></li>
+<li><a href="#events-and-callbacks">Events And Callbacks</a></li>
+<li><a href="#organizing-ui-elements">Organizing UI elements</a></li>
+<li><a href="#modelevents-and-collectionevents">modelEvents and collectionEvents</a></li>
+</ul>
+
+<h2 id="composite-model-template">Composite Model <code>template</code></h2>
+
+<p>When a <code>CompositeView</code> is rendered, the <code>model</code> will be rendered
+with the <code>template</code> that the view is configured with. You can
+override the template by passing it in as a constructor option:</p>
+<pre class="highlight javascript"><span class="k">new</span> <span class="nx">MyComp</span><span class="p">({</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">&quot;#some-template&quot;</span>
+<span class="p">});</span>
+</pre>
+<h2 id="compositeview&#39;s-itemviewcontainer">CompositeView&rsquo;s <code>itemViewContainer</code></h2>
+
+<p>By default the composite view uses the same <code>appendHtml</code> method that the
+collection view provides. This means the view will call jQuery&rsquo;s <code>.append</code>
+to move the HTML contents from the item view instance in to the collection
+view&rsquo;s <code>el</code>.</p>
+
+<p>This is typically not very useful as a composite view will usually render
+a container DOM element in which the item views should be placed.</p>
+
+<p>For example, if you are building a table view, and want to append each
+item from the collection in to the <code>&lt;tbody&gt;</code> of the table, you might
+do this with a template:</p>
+<pre class="highlight html"><span class="nt">&lt;script </span><span class="na">id=</span><span class="s">&quot;row-template&quot;</span> <span class="na">type=</span><span class="s">&quot;text/html&quot;</span><span class="nt">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">td</span><span class="o">&gt;&lt;%=</span> <span class="nx">someData</span> <span class="o">%&gt;&lt;</span><span class="sr">/</span><span class="err">td&gt;</span>
+  <span class="o">&lt;</span><span class="nx">td</span><span class="o">&gt;&lt;%=</span> <span class="nx">moreData</span> <span class="o">%&gt;&lt;</span><span class="sr">/</span><span class="err">td&gt;</span>
+  <span class="o">&lt;</span><span class="nx">td</span><span class="o">&gt;&lt;%=</span> <span class="nx">stuff</span> <span class="o">%&gt;&lt;</span><span class="sr">/</span><span class="err">td&gt;</span>
+<span class="nt">&lt;/script&gt;</span>
+
+<span class="nt">&lt;script </span><span class="na">id=</span><span class="s">&quot;table-template&quot;</span> <span class="na">type=</span><span class="s">&quot;text/html&quot;</span><span class="nt">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">table</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">thead</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">tr</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">th</span><span class="o">&gt;</span><span class="nx">Some</span> <span class="nx">Column</span><span class="o">&lt;</span><span class="sr">/</span><span class="err">th&gt;</span>
+        <span class="o">&lt;</span><span class="nx">th</span><span class="o">&gt;</span><span class="nx">Another</span> <span class="nx">Column</span><span class="o">&lt;</span><span class="sr">/</span><span class="err">th&gt;</span>
+        <span class="o">&lt;</span><span class="nx">th</span><span class="o">&gt;</span><span class="nx">Still</span> <span class="nx">More</span><span class="o">&lt;</span><span class="sr">/</span><span class="err">th&gt;</span>
+      <span class="o">&lt;</span><span class="sr">/</span><span class="err">tr&gt;</span>
+    <span class="o">&lt;</span><span class="sr">/</span><span class="err">thead&gt;</span>
+
+    <span class="c">&lt;!--</span> <span class="nx">want</span> <span class="nx">to</span> <span class="nx">insert</span> <span class="nx">collection</span> <span class="nx">items</span><span class="p">,</span> <span class="nx">here</span> <span class="o">--&gt;</span>
+    <span class="o">&lt;</span><span class="nx">tbody</span><span class="o">&gt;&lt;</span><span class="sr">/</span><span class="err">tbody&gt;</span>
+
+    <span class="o">&lt;</span><span class="nx">tfoot</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">tr</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">td</span> <span class="nx">colspan</span><span class="o">=</span><span class="s2">&quot;3&quot;</span><span class="o">&gt;</span><span class="nx">some</span> <span class="nx">footer</span> <span class="nx">information</span><span class="o">&lt;</span><span class="sr">/</span><span class="err">td&gt;</span>
+      <span class="o">&lt;</span><span class="sr">/</span><span class="err">tr&gt;</span>
+    <span class="o">&lt;</span><span class="sr">/</span><span class="err">tfoot&gt;</span>
+  <span class="o">&lt;</span><span class="sr">/</span><span class="err">table&gt;</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre>
+<p>To get your itemView instances to render within the <code>&lt;tbody&gt;</code> of this
+table structure, specify an <code>itemViewContainer</code> in your composite view,
+like this:</p>
+<pre class="highlight javascript"><span class="nx">RowView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">tagName</span><span class="p">:</span> <span class="s2">&quot;tr&quot;</span><span class="p">,</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">&quot;#row-template&quot;</span>
+<span class="p">});</span>
+
+<span class="nx">TableView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CompositeView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">itemView</span><span class="p">:</span> <span class="nx">RowView</span><span class="p">,</span>
+
+  <span class="c1">// specify a jQuery selector to put the itemView instances in to
+</span>  <span class="na">itemViewContainer</span><span class="p">:</span> <span class="s2">&quot;tbody&quot;</span><span class="p">,</span>
+
+  <span class="na">template</span><span class="p">:</span> <span class="s2">&quot;#table-template&quot;</span>
+<span class="p">});</span>
+</pre>
+<p>This will put all of the <code>itemView</code> instances in to the <code>&lt;tbody&gt;</code> tag of
+the composite view&rsquo;s rendered template, correctly producing the table
+structure.</p>
+
+<p>Alternatively, you can specify a function as the <code>itemViewContainer</code>. This
+function needs to return a jQuery selector string, or a jQuery selector
+object.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">TableView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CompositeView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">// ...
+</span>
+  <span class="nl">itemViewContainer</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="k">return</span> <span class="s2">&quot;#tbody&quot;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>Using a function allows for logic to be used for the selector. However,
+only one value can be returned. Upon returning the first value, it will
+be cached and that value will be used for the remainder of that view
+instance&#39; lifecycle.</p>
+
+<p>Alternatively, the <code>itemViewContainer</code> can be supplied in the constructor
+function options:</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">myComp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">CompositeView</span><span class="p">({</span>
+  <span class="c1">// ...,
+</span>
+  <span class="nl">itemViewContainer</span><span class="p">:</span> <span class="s2">&quot;#tbody&quot;</span>
+<span class="p">});</span>
+</pre>
+<h2 id="compositeview&#39;s-appendhtml">CompositeView&rsquo;s <code>appendHtml</code></h2>
+
+<p>Sometimes the <code>itemViewContainer</code> configuration is insuficient for
+specifying where the itemView instance should be placed. If this is the
+case, you can override the <code>appendHtml</code> method with your own implementation.</p>
+
+<p>For more information on this method, see the <a href="https://github.com/marionettejs/backbone.marionette/blob/master/docs/marionette.collectionview.md">CollectionView&rsquo;s documentation</a>.</p>
+
+<h2 id="recursive-by-default">Recursive By Default</h2>
+
+<p>The default rendering mode for a <code>CompositeView</code> assumes a
+hierarchical, recursive structure. If you configure a composite
+view without specifying an <code>itemView</code>, you&rsquo;ll get the same
+composite view type rendered for each item in the collection. If
+you need to override this, you can specify a <code>itemView</code> in the
+composite view&rsquo;s definition:</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">ItemView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
+
+<span class="kd">var</span> <span class="nx">CompView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CompositeView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">itemView</span><span class="p">:</span> <span class="nx">ItemView</span>
+<span class="p">});</span>
+</pre>
+<h2 id="model-and-collection-rendering">Model And Collection Rendering</h2>
+
+<p>The model and collection for the composite view will re-render
+themselves under the following conditions:</p>
+
+<ul>
+<li>When the collection&rsquo;s &ldquo;reset&rdquo; event is fired, it will only re-render the collection within the composite, and not the wrapper template</li>
+<li>When the collection has a model added to it (the &ldquo;add&rdquo; event is fired), it will render that one item to the rendered list</li>
+<li>When the collection has a model removed (the &ldquo;remove&rdquo; event is fired), it will remove that one item from the rendered list</li>
+</ul>
+
+<p>You can also manually re-render either or both of them:</p>
+
+<ul>
+<li>If you want to re-render everything, call the <code>.render()</code> method</li>
+<li>If you want to re-render the model&rsquo;s view, you can call <code>.renderModel()</code></li>
+</ul>
+
+<h2 id="events-and-callbacks">Events And Callbacks</h2>
+
+<p>During the course of rendering a composite, several events will
+be triggered. These events are triggered with the <a href="./marionette.functions.md">Marionette.triggerMethod</a>
+function, which calls a corresponding &ldquo;on{EventName}&rdquo; method on the view.</p>
+
+<ul>
+<li>&ldquo;composite:model:rendered&rdquo; / <code>onCompositeModelRendered</code> - after the <code>modelView</code> has been rendered</li>
+<li>&ldquo;composite:collection:before:render&rdquo; / <code>onCompositeCollectionBeforeRender</code> - before the collection of models is rendered</li>
+<li>&ldquo;composite:collection:rendered&rdquo; / <code>onCompositeCollectionRendered</code> - after the collection of models has been rendered</li>
+<li>&ldquo;render&rdquo; / <code>onRender</code> and &ldquo;composite:rendered&rdquo; / <code>onCompositeRendered</code> - after everything has been rendered</li>
+</ul>
+
+<p>Additionally, after the composite view has been rendered, an
+<code>onRender</code> method will be called. You can implement this in
+your view to provide custom code for dealing with the view&rsquo;s
+<code>el</code> after it has been rendered:</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CompositeView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">onRender</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// do stuff here
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h2 id="organizing-ui-elements">Organizing UI elements</h2>
+
+<p>Similar to ItemView, you can organize the UI elements inside the
+CompositeView by specifying them in the <code>UI</code> hash. It should be
+noted that the elements that can be accessed via this hash are
+the elements that are directly rendered by the composite view
+template, not those belonging to the collection.</p>
+
+<p>The UI elements will be accessible as soon as the composite view
+template is rendered (and before the collection is rendered),
+which means you can even access them in the <code>onBeforeRender</code> method.</p>
+
+<h2 id="modelevents-and-collectionevents">modelEvents and collectionEvents</h2>
+
+<p>CompositeViews can bind directly to model events and collection events
+in a declarative manner:</p>
+<pre class="highlight javascript"><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CompositeView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">modelEvents</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;change&quot;</span><span class="err">:</span> <span class="s2">&quot;modelChanged&quot;</span>
+  <span class="p">},</span>
+
+  <span class="na">collectionEvents</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;add&quot;</span><span class="err">:</span> <span class="s2">&quot;modelAdded&quot;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>For more information, see the <a href="./marionette.view.md">Marionette.View</a> documentation.</p>
+
+          </div>
+        </div>
+    </body>
+</html>

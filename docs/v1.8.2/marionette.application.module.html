@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="docs no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="docs no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="docs no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="docs no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Marionette.js</title>
+        <meta content="" name="description">
+        <meta name="viewport" content="width=device-width">
+        <link href="../../stylesheets/docs-9b3ec880.css" media="screen" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="//use.typekit.net/ycm5ipv.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <!--[if lt IE 9]><script src="js/vendor/selectivizr-1.0.2.min.js"></script><![endif]-->
+        <script src="../../javascripts/header-443c0a2a.js" type="text/javascript"></script>
+
+        <link rel="author" href="humans.txt">
+        <link rel="publisher" href="https://plus.google.com/101060306397560578875/">
+        <meta name="twitter:card" value="Make your backbone applications dance with a composite application architecture">
+        <meta name="twitter:site" value="@marionettejs">
+        <meta property="og:site_name" content="Marionette.js – Make your backbone applications dance with a composite application architecture!">
+        <meta property="og:image" content="http://marionettejs.com/images/og-standard.jpg">
+        <meta property="og:url" content="http://marionettejs.com/">
+        <meta property="og:description" content="">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+        <script src="/downloads/backbone.marionette.js"></script>
+        <script src="../../javascripts/docs-7c87f248.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="docs">
+          <nav class="docs__sidebar">
+            <h3>Marionette API</h3>
+            <ul>
+              <li><a href="marionette.application">Application</a></li>
+              <li><a href="marionette.application.module">Application.module</a></li>
+              <li><a href="marionette.approuter">AppRouter</a></li>
+              <li><a href="marionette.behavior">Behavior</a></li>
+              <li><a href="marionette.behaviors">Behaviors</a></li>
+              <li><a href="marionette.callbacks">Callbacks</a></li>
+              <li><a href="marionette.collectionview">CollectionView</a></li>
+              <li><a href="marionette.compositeview">CompositeView</a></li>
+              <li><a href="marionette.configuration">Configuration</a></li>
+              <li><a href="marionette.controller">Controller</a></li>
+              <li><a href="marionette.functions">Functions</a></li>
+              <li><a href="marionette.itemview">ItemView</a></li>
+              <li><a href="marionette.layout">Layout</a></li>
+              <li><a href="marionette.region">Region</a></li>
+              <li><a href="marionette.regionmanager">RegionManager</a></li>
+              <li><a href="marionette.renderer">Renderer</a></li>
+              <li><a href="marionette.templatecache">TemplateCache</a></li>
+              <li><a href="marionette.view">View</a></li>
+            </ul>
+          </nav>
+          <div class="docs__content">
+            <h1 id="marionette.application.module">Marionette.Application.module</h1>
+
+<p>Marionette Modules allow you to create modular encapsulated logic.
+They can be used to split apart large applications into multiple files,
+and to build individual components of your app.</p>
+
+<h2 id="documentation-index">Documentation Index</h2>
+
+<ul>
+<li><a href="#basic-usage">Basic Usage</a></li>
+<li><a href="#module-definitions">Module Definitions</a>
+
+<ul>
+<li><a href="#callback-function-definition">Callback Function Definition</a></li>
+<li><a href="#object-literal-definition">Object Literal Definition</a></li>
+</ul></li>
+<li><a href="#module-classes">Module Classes</a></li>
+<li><a href="#defining-sub-modules">Defining Sub-Modules</a></li>
+<li><a href="#starting-and-stopping-modules">Starting and Stopping Modules</a></li>
+<li><a href="#starting-modules">Starting Modules</a>
+
+<ul>
+<li><a href="#module-initializers">Module Initializers</a></li>
+<li><a href="#start-events">Start Events</a></li>
+<li><a href="#preventing-auto-start-of-modules">Preventing Auto-Start Of Modules</a></li>
+<li><a href="#starting-sub-modules-with-parent">Starting Sub-Modules With Parent</a></li>
+</ul></li>
+<li><a href="#stopping-modules">Stopping Modules</a>
+
+<ul>
+<li><a href="#module-finalizers">Module Finalizers</a></li>
+<li><a href="#stop-events">Stop Events</a></li>
+</ul></li>
+</ul>
+
+<h2 id="basic-usage">Basic Usage</h2>
+
+<p>A module is defined directly from an Application object. To create a module all
+you need to do is give it a name.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">MyApp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Application</span><span class="p">();</span>
+
+<span class="c1">// Creates a new module named &quot;MyModule&quot;
+</span><span class="kd">var</span> <span class="nx">myModule</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;MyModule&quot;</span><span class="p">);</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">MyModule</span><span class="p">;</span> <span class="c1">// =&gt; a new Marionette.Module object
+</span>
+<span class="nx">myModule</span> <span class="o">===</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">MyModule</span><span class="p">;</span> <span class="c1">// =&gt; true
+</span></pre>
+<p>Modules cannot be overwritten once they are created. Subsequent
+calls to <code>module</code> with the same name argument will not create
+a new module, but instead return the already-created instance.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">MyApp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Application</span><span class="p">();</span>
+
+<span class="c1">// Instantiates a new Marionette.Module
+</span><span class="kd">var</span> <span class="nx">myModule</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;MyModule&quot;</span><span class="p">);</span>
+
+<span class="c1">// Returns the module you just created
+</span><span class="kd">var</span> <span class="nx">theSameModule</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;MyModule&quot;</span><span class="p">);</span>
+
+</pre>
+<h2 id="module-definitions">Module Definitions</h2>
+
+<p>You can provide a definition for your module when you instantiate it.
+Definitions can either be a callback function or an object literal.</p>
+
+<h3 id="callback-function-definition">Callback Function Definition</h3>
+
+<p>The callback function definition will be invoked immediately on calling
+the <code>module</code> method.</p>
+
+<p>It will receive 6 parameters, in this order:</p>
+
+<ul>
+<li>The module itself</li>
+<li>The Application object</li>
+<li>Backbone</li>
+<li>Backbone.Marionette</li>
+<li>jQuery</li>
+<li>Underscore</li>
+<li>Any custom arguments</li>
+</ul>
+
+<p>Within the callback you can attach both private and public
+functions and data directly to your module.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;MyModule&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">MyModule</span><span class="p">,</span> <span class="nx">MyApp</span><span class="p">,</span> <span class="nx">Backbone</span><span class="p">,</span> <span class="nx">Marionette</span><span class="p">,</span> <span class="nx">$</span><span class="p">,</span> <span class="nx">_</span><span class="p">){</span>
+
+  <span class="c1">// The context of the function is also the module itself
+</span>  <span class="k">this</span> <span class="o">===</span> <span class="nx">MyModule</span><span class="p">;</span> <span class="c1">// =&gt; true
+</span>
+  <span class="c1">// Private Data And Functions
+</span>  <span class="c1">// --------------------------
+</span>
+  <span class="kd">var</span> <span class="nx">myData</span> <span class="o">=</span> <span class="s2">&quot;this is private data&quot;</span><span class="p">;</span>
+
+  <span class="kd">var</span> <span class="nx">myFunction</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myData</span><span class="p">);</span>
+  <span class="p">}</span>
+
+
+  <span class="c1">// Public Data And Functions
+</span>  <span class="c1">// -------------------------
+</span>
+  <span class="nx">MyModule</span><span class="p">.</span><span class="nx">someData</span> <span class="o">=</span> <span class="s2">&quot;public data&quot;</span><span class="p">;</span>
+
+  <span class="nx">MyModule</span><span class="p">.</span><span class="nx">someFunction</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">MyModule</span><span class="p">.</span><span class="nx">someData</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">MyModule</span><span class="p">.</span><span class="nx">someData</span><span class="p">);</span> <span class="c1">//=&gt; public data
+</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">MyModule</span><span class="p">.</span><span class="nx">someFunction</span><span class="p">();</span> <span class="c1">//=&gt; public data
+</span></pre>
+<h4 id="additional-arguments">Additional Arguments</h4>
+
+<p>You can provide additional arguments to the definition
+function, allowing you to import 3rd party libraries
+and other resources that you want to have locally scoped to
+your module.</p>
+
+<p>Pass the additional arguments after the
+definition itself in the call to <code>module</code>.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;MyModule&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">MyModule</span><span class="p">,</span> <span class="nx">MyApp</span><span class="p">,</span> <span class="nx">Backbone</span><span class="p">,</span> <span class="nx">Marionette</span><span class="p">,</span> <span class="nx">$</span><span class="p">,</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">Lib1</span><span class="p">,</span> <span class="nx">Lib2</span><span class="p">,</span> <span class="nx">LibEtc</span><span class="p">){</span>
+
+  <span class="c1">// Lib1 === LibraryNumber1;
+</span>  <span class="c1">// Lib2 === LibraryNumber2;
+</span>  <span class="c1">// LibEtc === LibraryNumberEtc;
+</span>
+<span class="p">},</span> <span class="nx">LibraryNumber1</span><span class="p">,</span> <span class="nx">LibraryNumber2</span><span class="p">,</span> <span class="nx">LibraryNumberEtc</span><span class="p">);</span>
+</pre>
+<h4 id="splitting-a-module-definition-apart">Splitting A Module Definition Apart</h4>
+
+<p>Sometimes a module definition can become quite long. You can split
+apart the definition by making subsequent calls to the <code>module</code>
+function.</p>
+
+<p>This can used to split the definition of your module
+across multiple files.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;MyModule&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">MyModule</span><span class="p">){</span>
+  <span class="nx">MyModule</span><span class="p">.</span><span class="nx">definition1</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="c1">// The following could be in a separate file
+</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;MyModule&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">MyModule</span><span class="p">){</span>
+  <span class="nx">MyModule</span><span class="p">.</span><span class="nx">definition2</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">MyModule</span><span class="p">.</span><span class="nx">definition1</span><span class="p">;</span> <span class="c1">//=&gt; true
+</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">MyModule</span><span class="p">.</span><span class="nx">definition2</span><span class="p">;</span> <span class="c1">//=&gt; true
+</span></pre>
+<h3 id="object-literal-definition">Object Literal Definition</h3>
+
+<p>The object literal definition of a module allows for more flexibility
+than the callback method. It allows you to, for instance, specify
+a custom class for your module.</p>
+
+<p>Through the object literal definition you can still set a definition
+function through the <code>define</code> property.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;MyModule&quot;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">define</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">MyModule</span><span class="p">,</span> <span class="nx">MyApp</span><span class="p">,</span> <span class="nx">Backbone</span><span class="p">,</span> <span class="nx">Marionette</span><span class="p">,</span> <span class="nx">$</span><span class="p">,</span> <span class="nx">_</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Define your module here
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h4 id="specifying-a-custom-module-class">Specifying a Custom Module Class</h4>
+
+<p>One of the more useful features of the object literal definition is specifying a custom
+module class. You can make a new class using the extend function.</p>
+<pre class="highlight text">var CustomModule = Marionette.Module.extend({
+  // Custom module properties
+});
+
+MyApp.module(&quot;Foo&quot;, {
+  moduleClass: CustomModule,
+  define: function() {} // You can still use the definition function on custom modules
+});
+</pre>
+<p>When <code>moduleClass</code> is omitted Marionette will default to instantiating a new <code>Marionette.Module</code>.</p>
+
+<h4 id="initialize-function">Initialize Function</h4>
+
+<p>Modules have an <code>initialize</code> function which is immediately called when the Module is invoked. You can think of the <code>initialize</code> function as an extension of the constructor.</p>
+
+<p>The initialize function is only available through the object literal definition of a Module.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo&quot;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">startWithParent</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="na">initialize</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">moduleName</span><span class="p">,</span> <span class="nx">app</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">someProperty</span> <span class="o">=</span> <span class="s1">'someValue'</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="c1">// You can still set a define function
+</span>  <span class="na">define</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">Foo</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">someProperty</span> <span class="p">);</span> <span class="c1">// Logs 'someValue'
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>The <code>initialize</code> function is passed three arguments.
+  * The object literal definition of the Module itself (which allows you to pass arbitrary values to your Module)
+  * The moduleName
+  * The app.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo&quot;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">initialize</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">moduleName</span><span class="p">,</span> <span class="nx">app</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span> <span class="nx">options</span><span class="p">.</span><span class="nx">someVar</span> <span class="p">);</span> <span class="c1">// Logs 'someString'
+</span>  <span class="p">},</span>
+  <span class="na">someVar</span><span class="p">:</span> <span class="s1">'someString'</span>
+<span class="p">});</span>
+</pre>
+<p>The initialize function is distinct from the <code>define</code> function. The primary difference between the two is that <code>initialize</code> is on the prototype chain, whereas <code>define</code> is not. What this means is that <code>initialize</code> can be inherited.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">CustomModule</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">Module</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">define</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{},</span>    <span class="c1">// This is not inherited and will never be called
+</span>  <span class="na">initialize</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span> <span class="c1">// This, on the other hand, will be inherited
+</span><span class="p">});</span>
+</pre>
+<h2 id="module-classes">Module Classes</h2>
+
+<p>Module classes can be used as an alternative to the define pattern.</p>
+
+<p>The extend function of a Module is identical to the extend functions on other Backbone and Marionette classes. This allows module lifecyle events like <code>onStart</code> and <code>onStop</code> to be called directly.</p>
+<pre class="highlight text">var FooModule = Marionette.Module.extend({
+  startWithParent: false,
+
+  constructor: function(moduleName, app, options) {
+  },
+
+  initialize: function(options, moduleName, app) {
+  },
+
+  onStart: function(options) {
+  },
+
+  onStop: function(options) {
+  },
+});
+
+MyApp.module(&quot;Foo&quot;, FooModule);
+</pre>
+<p>If all of the module&rsquo;s functionality is defined inside its class, then the class can be passed in directly. <code>MyApp.module(&quot;Foo&quot;, FooModule)</code></p>
+
+<h2 id="defining-sub-modules">Defining Sub-Modules</h2>
+
+<p>Sub-Modules (or &lsquo;child&rsquo; Modules) can be defined in a single call by passing
+a period-separated list of Modules to be created.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Parent.Child.GrandChild&quot;</span><span class="p">);</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">Parent</span><span class="p">;</span> <span class="c1">// =&gt; a valid module object
+</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">Parent</span><span class="p">.</span><span class="nx">Child</span><span class="p">;</span> <span class="c1">// =&gt; a valid module object
+</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">Parent</span><span class="p">.</span><span class="nx">Child</span><span class="p">.</span><span class="nx">GrandChild</span><span class="p">;</span> <span class="c1">// =&gt; a valid module object
+</span></pre>
+<p>When defining sub-modules using the dot-notation, the
+parent modules do not need to exist; they&rsquo;ll be created for you. If a parent
+has already been instantiated then that instance will be used.</p>
+
+<h2 id="starting-and-stopping-modules">Starting And Stopping Modules</h2>
+
+<p>Modules can be started and stopped independently of the application and
+of each other. This allows them to be loaded asynchronously, and also allows
+them to be shut down when they are no longer needed.</p>
+
+<p>This also facilitates unit testing of modules as you can start only the
+module that you need in your tests.</p>
+
+<h2 id="starting-modules">Starting Modules</h2>
+
+<p>Modules will, by default, start with the parent application. They also have a
+<code>.start</code> function that can be used to start a stopped module, or a module that&rsquo;s
+been configured to start independently from its parent.</p>
+
+<p>In this example, the module will exhibit the default behavior and start automatically
+with the parent application object&rsquo;s <code>start</code> call:</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Application</span><span class="p">();</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="c1">// module code goes here
+</span><span class="p">});</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</pre>
+<p>Note that modules loaded after the <code>MyApp.start()</code> call will be
+immediately started.</p>
+
+<h3 id="module-initializers">Module Initializers</h3>
+
+<p>Modules, like <code>Application</code> objects, can be configured to have initializers. And just like
+an Application&rsquo;s initializers, module&rsquo;s initializers are run anytime that
+the module is started. Further, there is no limit to the number of initializers it can have.</p>
+
+<p>Initializers can be added in the module&rsquo;s definition function.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Foo</span><span class="p">){</span>
+
+  <span class="nx">Foo</span><span class="p">.</span><span class="nx">addInitializer</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// Do things once the module has started
+</span>  <span class="p">});</span>
+
+  <span class="nx">Foo</span><span class="p">.</span><span class="nx">addInitializer</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// You can have more than one initializer
+</span>  <span class="p">});</span>
+
+<span class="p">});</span>
+</pre>
+<h3 id="start-events">Start Events</h3>
+
+<p>When starting a module, a &ldquo;before:start&rdquo; event will be triggered prior
+to any of the initializers being run. A &ldquo;start&rdquo; event will then be
+triggered after they have been run.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">mod</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;MyMod&quot;</span><span class="p">);</span>
+
+<span class="nx">mod</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;before:start&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="c1">// do stuff before the module is started
+</span><span class="p">});</span>
+
+<span class="nx">mod</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="c1">// do stuff after the module has been started
+</span><span class="p">});</span>
+</pre>
+<h4 id="passing-data-to-start-events">Passing Data to Start Events</h4>
+
+<p><code>.start</code> takes a single <code>options</code> parameter that will be passed to start events and their equivalent methods (<code>onStart</code> and <code>onBeforeStart</code>.)</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">mod</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;MyMod&quot;</span><span class="p">);</span>
+
+<span class="nx">mod</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;before:start&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">){</span>
+  <span class="c1">// do stuff before the module is started
+</span><span class="p">});</span>
+
+<span class="nx">mod</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">){</span>
+  <span class="c1">// do stuff after the module has been started
+</span><span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+ <span class="c1">// any data
+</span><span class="p">};</span>
+<span class="nx">mod</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
+</pre>
+<h3 id="preventing-auto-start-of-modules">Preventing Auto-Start Of Modules</h3>
+
+<p>The default behavior of modules is that they start with the application.
+If you wish to manually start a module instead, you can change this behavior
+with the <code>startWithParent</code> property.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">fooModule</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+
+  <span class="c1">// prevent starting with parent
+</span>  <span class="k">this</span><span class="p">.</span><span class="nx">startWithParent</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+  <span class="c1">// ... module code goes here
+</span><span class="p">});</span>
+
+<span class="c1">// start the app without starting the module
+</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+
+<span class="c1">// later, start the module
+</span><span class="nx">fooModule</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</pre>
+<p>The same behavior can be accomplished with the object literal definition:</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">fooModule</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo&quot;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">startWithParent</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">});</span>
+</pre>
+<p>When splitting a module across multiple files, it is recommended that you set
+<code>startWithParent</code> to be false.</p>
+
+<h3 id="starting-sub-modules-with-parent">Starting Sub-Modules With Parent</h3>
+
+<p>As you might expect, submodules default to starting with their parent module.
+ The starting of sub-modules is done in a depth-first hierarchy traversal.
+That is, a hierarchy of <code>Foo.Bar.Baz</code> will start <code>Baz</code> first, then <code>Bar</code>,
+and finally <code>Foo</code>.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){...});</span>
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo.Bar&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){...});</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</pre>
+<p>In this example, the &ldquo;Foo.Bar&rdquo; module will be started with the call to
+<code>MyApp.start()</code> because the parent module, &ldquo;Foo&rdquo; is (by default) set to start
+with the app.</p>
+
+<p>A sub-module can override this behavior by setting its <code>startWithParent</code>
+to false. This prevents it from being started by the parent&rsquo;s <code>start</code> call.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){...});</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo.Bar&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">startWithParent</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">})</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</pre>
+<p>Now the module &ldquo;Foo&rdquo; will be started, but the sub-module &ldquo;Foo.Bar&rdquo; will
+not be started.</p>
+
+<p>A sub-module can still be started manually, with this configuration:</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo.Bar&quot;</span><span class="p">).</span><span class="nx">start</span><span class="p">();</span>
+</pre>
+<h2 id="stopping-modules">Stopping Modules</h2>
+
+<p>A module can be stopped, or shut down, to clear memory and resources when
+the module is no longer needed. Like the starting of modules, stopping is done
+in a depth-first hierarchy traversal. That is, a hierarchy of modules like
+<code>Foo.Bar.Baz</code> will stop <code>Baz</code> first, then <code>Bar</code>, and finally <code>Foo</code>.</p>
+
+<p>To stop a module and its children, call the <code>stop</code> method of a module.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo&quot;</span><span class="p">).</span><span class="nx">stop</span><span class="p">();</span>
+</pre>
+<p>Modules are not automatically stopped by the application. If you wish to
+stop one you must call the <code>stop</code> method on it, or stop its parent module.
+When you stop any parent module, all of its children will be stopped as well.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo.Bar.Baz&quot;</span><span class="p">);</span>
+
+<span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo&quot;</span><span class="p">).</span><span class="nx">stop</span><span class="p">();</span>
+</pre>
+<p>This call to <code>stop</code> causes the <code>Bar</code> and <code>Baz</code> modules to both be stopped
+as they are sub-modules of <code>Foo</code>. For more information on defining
+sub-modules, see the section &ldquo;Defining Sub-Modules&rdquo;.</p>
+
+<h3 id="module-finalizers">Module Finalizers</h3>
+
+<p>Modules also have finalizers that work in an opposite manner to
+initializers: they are called whenever a module is stopped via the <code>stop</code> method.
+You can have as many finalizers as you&rsquo;d like.</p>
+<pre class="highlight javascript"><span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;Foo&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Foo</span><span class="p">){</span>
+
+  <span class="nx">Foo</span><span class="p">.</span><span class="nx">addFinalizer</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// Tear down, shut down and clean up the module in here
+</span>  <span class="p">});</span>
+
+  <span class="nx">Foo</span><span class="p">.</span><span class="nx">addFinalizer</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// Do more things
+</span>  <span class="p">});</span>
+
+<span class="p">});</span>
+</pre>
+<h3 id="stop-events">Stop Events</h3>
+
+<p>When stopping a module, a &ldquo;before:stop&rdquo; event will be triggered prior
+to any of the finalizers being run. A &ldquo;stop&rdquo; event will then be triggered
+after they have been run.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">mod</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s2">&quot;MyMod&quot;</span><span class="p">);</span>
+
+<span class="nx">mod</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;before:stop&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="c1">// do stuff before the module is stopped
+</span><span class="p">});</span>
+
+<span class="nx">mod</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;stop&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="c1">// do stuff after the module has been stopped
+</span><span class="p">});</span>
+</pre>
+          </div>
+        </div>
+    </body>
+</html>

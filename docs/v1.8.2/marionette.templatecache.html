@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="docs no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="docs no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="docs no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="docs no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Marionette.js</title>
+        <meta content="" name="description">
+        <meta name="viewport" content="width=device-width">
+        <link href="../../stylesheets/docs-9b3ec880.css" media="screen" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="//use.typekit.net/ycm5ipv.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <!--[if lt IE 9]><script src="js/vendor/selectivizr-1.0.2.min.js"></script><![endif]-->
+        <script src="../../javascripts/header-443c0a2a.js" type="text/javascript"></script>
+
+        <link rel="author" href="humans.txt">
+        <link rel="publisher" href="https://plus.google.com/101060306397560578875/">
+        <meta name="twitter:card" value="Make your backbone applications dance with a composite application architecture">
+        <meta name="twitter:site" value="@marionettejs">
+        <meta property="og:site_name" content="Marionette.js – Make your backbone applications dance with a composite application architecture!">
+        <meta property="og:image" content="http://marionettejs.com/images/og-standard.jpg">
+        <meta property="og:url" content="http://marionettejs.com/">
+        <meta property="og:description" content="">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+        <script src="/downloads/backbone.marionette.js"></script>
+        <script src="../../javascripts/docs-7c87f248.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="docs">
+          <nav class="docs__sidebar">
+            <h3>Marionette API</h3>
+            <ul>
+              <li><a href="marionette.application">Application</a></li>
+              <li><a href="marionette.application.module">Application.module</a></li>
+              <li><a href="marionette.approuter">AppRouter</a></li>
+              <li><a href="marionette.behavior">Behavior</a></li>
+              <li><a href="marionette.behaviors">Behaviors</a></li>
+              <li><a href="marionette.callbacks">Callbacks</a></li>
+              <li><a href="marionette.collectionview">CollectionView</a></li>
+              <li><a href="marionette.compositeview">CompositeView</a></li>
+              <li><a href="marionette.configuration">Configuration</a></li>
+              <li><a href="marionette.controller">Controller</a></li>
+              <li><a href="marionette.functions">Functions</a></li>
+              <li><a href="marionette.itemview">ItemView</a></li>
+              <li><a href="marionette.layout">Layout</a></li>
+              <li><a href="marionette.region">Region</a></li>
+              <li><a href="marionette.regionmanager">RegionManager</a></li>
+              <li><a href="marionette.renderer">Renderer</a></li>
+              <li><a href="marionette.templatecache">TemplateCache</a></li>
+              <li><a href="marionette.view">View</a></li>
+            </ul>
+          </nav>
+          <div class="docs__content">
+            <h1 id="marionette.templatecache">Marionette.TemplateCache</h1>
+
+<p>The <code>TemplateCache</code> provides a cache for retrieving templates
+from script blocks in your HTML. This will improve
+the speed of subsequent calls to get a template.</p>
+
+<h2 id="documentation-index">Documentation Index</h2>
+
+<ul>
+<li><a href="#basic-usage">Basic Usage</a></li>
+<li><a href="#clear-items-from-cache">Clear Items From cache</a></li>
+<li><a href="#customizing-template-access">Customizing Template Access</a></li>
+<li><a href="#override-template-retrieval">Override Template Retrieval</a></li>
+<li><a href="#override-template-compilation">Override Template Compilation</a></li>
+</ul>
+
+<h2 id="basic-usage">Basic Usage</h2>
+
+<p>To use the <code>TemplateCache</code>, call the <code>get</code> method on TemplateCache directly.
+Internally, instances of the TemplateCache type will be created and stored
+but you do not have to manually create these instances yourself. <code>get</code> will
+return a compiled template function.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">template</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">TemplateCache</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;#my-template&quot;</span><span class="p">);</span>
+<span class="c1">// use the template
+</span><span class="nx">template</span><span class="p">({</span><span class="na">param1</span><span class="p">:</span><span class="s1">'value1'</span><span class="p">,</span> <span class="na">paramN</span><span class="p">:</span><span class="s1">'valueN'</span><span class="p">});</span>
+</pre>
+<p>Making multiple calls to get the same template will retrieve the
+template from the cache on subsequence calls.</p>
+
+<h3 id="clear-items-from-cache">Clear Items From cache</h3>
+
+<p>You can clear one or more, or all items from the cache using the
+<code>clear</code> method. Clearing a template from the cache will force it
+to re-load from the DOM (via the <code>loadTemplate</code>
+function which can be overridden, see below) the next time it is retrieved.</p>
+
+<p>If you do not specify any parameters, all items will be cleared
+from the cache:</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">TemplateCache</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;#my-template&quot;</span><span class="p">);</span>
+<span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">TemplateCache</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;#this-template&quot;</span><span class="p">);</span>
+<span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">TemplateCache</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;#that-template&quot;</span><span class="p">);</span>
+
+<span class="c1">// clear all templates from the cache
+</span><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">TemplateCache</span><span class="p">.</span><span class="nx">clear</span><span class="p">()</span>
+</pre>
+<p>If you specify one or more parameters, these parameters are assumed
+to be the <code>templateId</code> used for loading / caching:</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">TemplateCache</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;#my-template&quot;</span><span class="p">);</span>
+<span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">TemplateCache</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;#this-template&quot;</span><span class="p">);</span>
+<span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">TemplateCache</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;#that-template&quot;</span><span class="p">);</span>
+
+<span class="c1">// clear 2 of 3 templates from the cache
+</span><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">TemplateCache</span><span class="p">.</span><span class="nx">clear</span><span class="p">(</span><span class="s2">&quot;#my-template&quot;</span><span class="p">,</span> <span class="s2">&quot;#this-template&quot;</span><span class="p">)</span>
+</pre>
+<h2 id="customizing-template-access">Customizing Template Access</h2>
+
+<p>If you want to use an alternate template engine while
+still taking advantage of the template caching functionality, or want to customize
+how templates are stored and retrieved, you will need to customize the
+<code>TemplateCache object</code>. The default operation of <code>TemplateCache</code>, is to
+retrieve templates from the DOM based on the containing element&rsquo;s id
+attribute, and compile the html in that element with the underscore.js
+<code>template</code> function.</p>
+
+<h3 id="override-template-retrieval">Override Template Retrieval</h3>
+
+<p>The default template retrieval is to select the template contents
+from the DOM using jQuery. If you wish to change the way this
+works, you can override the <code>loadTemplate</code> method on the
+<code>TemplateCache</code> object.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">TemplateCache</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">loadTemplate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">templateId</span><span class="p">){</span>
+  <span class="c1">// load your template here, returning the data needed for the compileTemplate
+</span>  <span class="c1">// function. For example, you have a function that creates templates based on the
+</span>  <span class="c1">// value of templateId
+</span>  <span class="kd">var</span> <span class="nx">myTemplate</span> <span class="o">=</span> <span class="nx">myTemplateFunc</span><span class="p">(</span><span class="nx">templateId</span><span class="p">);</span>
+
+  <span class="c1">// send the template back
+</span>  <span class="k">return</span> <span class="nx">myTemplate</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+<h3 id="override-template-compilation">Override Template Compilation</h3>
+
+<p>The default template compilation passes the results from
+<code>loadTemplate</code> to the <code>compileTemplate</code> function, which returns
+an underscore.js compiled template function. When overriding <code>compileTemplate</code>
+remember that it must return a function which takes an object of parameters and values
+and returns a formatted HTML string.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">TemplateCache</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">compileTemplate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">rawTemplate</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// use Handlebars.js to compile the template
+</span>  <span class="k">return</span> <span class="nx">Handlebars</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">rawTemplate</span><span class="p">);</span>
+<span class="p">}</span>
+</pre>
+          </div>
+        </div>
+    </body>
+</html>

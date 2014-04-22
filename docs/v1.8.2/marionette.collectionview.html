@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="docs no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="docs no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="docs no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="docs no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Marionette.js</title>
+        <meta content="" name="description">
+        <meta name="viewport" content="width=device-width">
+        <link href="../../stylesheets/docs-9b3ec880.css" media="screen" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="//use.typekit.net/ycm5ipv.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <!--[if lt IE 9]><script src="js/vendor/selectivizr-1.0.2.min.js"></script><![endif]-->
+        <script src="../../javascripts/header-443c0a2a.js" type="text/javascript"></script>
+
+        <link rel="author" href="humans.txt">
+        <link rel="publisher" href="https://plus.google.com/101060306397560578875/">
+        <meta name="twitter:card" value="Make your backbone applications dance with a composite application architecture">
+        <meta name="twitter:site" value="@marionettejs">
+        <meta property="og:site_name" content="Marionette.js – Make your backbone applications dance with a composite application architecture!">
+        <meta property="og:image" content="http://marionettejs.com/images/og-standard.jpg">
+        <meta property="og:url" content="http://marionettejs.com/">
+        <meta property="og:description" content="">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+        <script src="/downloads/backbone.marionette.js"></script>
+        <script src="../../javascripts/docs-7c87f248.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="docs">
+          <nav class="docs__sidebar">
+            <h3>Marionette API</h3>
+            <ul>
+              <li><a href="marionette.application">Application</a></li>
+              <li><a href="marionette.application.module">Application.module</a></li>
+              <li><a href="marionette.approuter">AppRouter</a></li>
+              <li><a href="marionette.behavior">Behavior</a></li>
+              <li><a href="marionette.behaviors">Behaviors</a></li>
+              <li><a href="marionette.callbacks">Callbacks</a></li>
+              <li><a href="marionette.collectionview">CollectionView</a></li>
+              <li><a href="marionette.compositeview">CompositeView</a></li>
+              <li><a href="marionette.configuration">Configuration</a></li>
+              <li><a href="marionette.controller">Controller</a></li>
+              <li><a href="marionette.functions">Functions</a></li>
+              <li><a href="marionette.itemview">ItemView</a></li>
+              <li><a href="marionette.layout">Layout</a></li>
+              <li><a href="marionette.region">Region</a></li>
+              <li><a href="marionette.regionmanager">RegionManager</a></li>
+              <li><a href="marionette.renderer">Renderer</a></li>
+              <li><a href="marionette.templatecache">TemplateCache</a></li>
+              <li><a href="marionette.view">View</a></li>
+            </ul>
+          </nav>
+          <div class="docs__content">
+            <h1 id="marionette.collectionview">Marionette.CollectionView</h1>
+
+<p>The <code>CollectionView</code> will loop through all of the models in the
+specified collection, render each of them using a specified <code>itemView</code>,
+then append the results of the item view&rsquo;s <code>el</code> to the collection view&rsquo;s
+<code>el</code>.</p>
+
+<p>CollectionView extends directly from Marionette.View. Please see
+<a href="marionette.view.md">the Marionette.View documentation</a>
+for more information on available features and functionality.</p>
+
+<p>Additionally, interactions with Marionette.Region
+will provide features such as <code>onShow</code> callbacks, etc. Please see
+<a href="marionette.region.md">the Region documentation</a> for more information.</p>
+
+<h2 id="documentation-index">Documentation Index</h2>
+
+<ul>
+<li><a href="#collectionviews-itemview">CollectionView&rsquo;s <code>itemView</code></a>
+
+<ul>
+<li><a href="#collectionviews-getitemview">CollectionView&rsquo;s <code>getItemView</code></a></li>
+<li><a href="#collectionviews-itemviewoptions">CollectionView&rsquo;s <code>itemViewOptions</code></a></li>
+<li><a href="#collectionviews-itemvieweventprefix">CollectionView&rsquo;s <code>itemViewEventPrefix</code></a></li>
+<li><a href="#collectionviews-itemevents">CollectionView&rsquo;s <code>itemEvents</code></a></li>
+<li><a href="#collectionviews-builditemview">CollectionView&rsquo;s <code>buildItemView</code></a></li>
+<li><a href="#collectionviews-additemview">CollectionView&rsquo;s <code>addItemView</code></a></li>
+</ul></li>
+<li><a href="#collectionviews-emptyview">CollectionView&rsquo;s <code>emptyView</code></a>
+
+<ul>
+<li><a href="#collectionviews-getemptyview">CollectionView&rsquo;s <code>getEmptyView</code></a></li>
+</ul></li>
+<li><a href="#callback-methods">Callback Methods</a>
+
+<ul>
+<li><a href="#onbeforerender-callback">onBeforeRender callback</a></li>
+<li><a href="#onrender-callback">onRender callback</a></li>
+<li><a href="#beforeclose-callback">onBeforeClose callback</a></li>
+<li><a href="#onclose-callback">onClose callback</a></li>
+<li><a href="#onbeforeitemadded-callback">onBeforeItemAdded callback</a></li>
+<li><a href="#onafteritemadded-callback">onAfterItemAdded callback</a></li>
+<li><a href="#onitemremoved-callback">onItemRemoved callback</a></li>
+</ul></li>
+<li><a href="#collectionview-events">CollectionView Events</a>
+
+<ul>
+<li><a href="#beforerender-event">&ldquo;before:render&rdquo; event</a></li>
+<li><a href="#render-event">&ldquo;render&rdquo; event</a></li>
+<li><a href="#beforeclose-event">&ldquo;before:close&rdquo; event</a></li>
+<li><a href="#closed--collectionclosed-event">&ldquo;closed&rdquo; / &ldquo;collection:closed&rdquo; event</a></li>
+<li><a href="#beforeitemadded--afteritemadded-event">&ldquo;before:item:added&rdquo; / &ldquo;after:item:added&rdquo; event</a></li>
+<li><a href="#itemremoved-event">&ldquo;item:removed&rdquo; event</a></li>
+<li><a href="#itemview-event-bubbling-from-child-views">&ldquo;itemview:*&rdquo; event bubbling from child views</a></li>
+</ul></li>
+<li><a href="#collectionview-render">CollectionView render</a></li>
+<li><a href="#collectionview-automatic-rendering">CollectionView: Automatic Rendering</a></li>
+<li><a href="#collectionview-re-render-collection">CollectionView: Re-render Collection</a></li>
+<li><a href="#collectionviews-appendhtml">CollectionView&rsquo;s appendHtml</a></li>
+<li><a href="#collectionviews-children">CollectionView&rsquo;s children</a></li>
+<li><a href="#collectionview-close">CollectionView close</a></li>
+</ul>
+
+<h2 id="collectionview&#39;s-itemview">CollectionView&rsquo;s <code>itemView</code></h2>
+
+<p>Specify an <code>itemView</code> in your collection view definition. This must be
+a Backbone view object definition, not an instance. It can be any
+<code>Backbone.View</code> or be derived from <code>Marionette.ItemView</code>.</p>
+<pre class="highlight javascript"><span class="nx">MyItemView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
+
+<span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">itemView</span><span class="p">:</span> <span class="nx">MyItemView</span>
+<span class="p">});</span>
+</pre>
+<p>Item views must be defined before they are referenced by the
+<code>itemView</code> attribute in a collection view definition. Use <code>getItemView</code>
+to lookup the definition as child views are instantiated.</p>
+
+<p>Alternatively, you can specify an <code>itemView</code> in the options for
+the constructor:</p>
+<pre class="highlight javascript"><span class="nx">MyCollectionView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({...});</span>
+
+<span class="k">new</span> <span class="nx">MyCollectionView</span><span class="p">({</span>
+  <span class="na">itemView</span><span class="p">:</span> <span class="nx">MyItemView</span>
+<span class="p">});</span>
+</pre>
+<p>If you do not specify an <code>itemView</code>, an exception will be thrown
+stating that you must specify an <code>itemView</code>.</p>
+
+<h3 id="collectionview&#39;s-getitemview">CollectionView&rsquo;s <code>getItemView</code></h3>
+
+<p>The value returned by this method is the <code>ItemView</code> class that will be instantiated when a <code>Model</code> needs to be initially rendered.
+This method also gives you the ability to customize per <code>Model</code> <code>ItemViews</code>.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">getItemView</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// some logic to calculate which view to return
+</span>    <span class="k">return</span> <span class="nx">someItemSpecificView</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h3 id="collectionview&#39;s-itemviewoptions">CollectionView&rsquo;s <code>itemViewOptions</code></h3>
+
+<p>There may be scenarios where you need to pass data from your parent
+collection view in to each of the itemView instances. To do this, provide
+a <code>itemViewOptions</code> definition on your collection view as an object
+literal. This will be passed to the constructor of your itemView as part
+of the <code>options</code>.</p>
+<pre class="highlight javascript"><span class="nx">ItemView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">({</span>
+  <span class="na">initialize</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">foo</span><span class="p">);</span> <span class="c1">// =&gt; &quot;bar&quot;
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">CollectionView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">({</span>
+  <span class="na">itemView</span><span class="p">:</span> <span class="nx">ItemView</span><span class="p">,</span>
+
+  <span class="na">itemViewOptions</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">foo</span><span class="p">:</span> <span class="s2">&quot;bar&quot;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>You can also specify the <code>itemViewOptions</code> as a function, if you need to
+calculate the values to return at runtime. The model will be passed into
+the function should you need access to it when calculating
+<code>itemViewOptions</code>. The function must return an object, and the attributes
+of the object will be copied to the <code>itemView</code> instance&rsquo;s options.</p>
+<pre class="highlight javascript"><span class="nx">CollectionView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">({</span>
+  <span class="na">itemViewOptions</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">model</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// do some calculations based on the model
+</span>    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">foo</span><span class="p">:</span> <span class="s2">&quot;bar&quot;</span><span class="p">,</span>
+      <span class="na">itemIndex</span><span class="p">:</span> <span class="nx">index</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h3 id="collectionview&#39;s-itemvieweventprefix">CollectionView&rsquo;s <code>itemViewEventPrefix</code></h3>
+
+<p>You can customize the event prefix for events that are forwarded
+through the collection view. To do this, set the <code>itemViewEventPrefix</code>
+on the collection view.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">CV</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">itemViewEventPrefix</span><span class="p">:</span> <span class="s2">&quot;some:prefix&quot;</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">CV</span><span class="p">({</span>
+  <span class="na">collection</span><span class="p">:</span> <span class="nx">myCol</span>
+<span class="p">});</span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;some:prefix:render&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="c1">// item view was rendered
+</span><span class="p">});</span>
+
+<span class="nx">c</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+</pre>
+<p>The <code>itemViewEventPrefix</code> can be provided in the view definition or
+in the constructor function call, to get a view instance.</p>
+
+<h3 id="collectionview&#39;s-itemevents">CollectionView&rsquo;s <code>itemEvents</code></h3>
+
+<p>You can specify an <code>itemEvents</code> hash or method which allows you to capture all bubbling itemEvents without having to manually set bindings. The keys of the hash can either be a function or a string that is the name of a method on the collection view.</p>
+<pre class="highlight javascript"><span class="nx">itemEvents</span><span class="err">:</span> <span class="p">{</span>
+  <span class="s2">&quot;render&quot;</span><span class="err">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;an itemView has been rendered&quot;</span><span class="p">);</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;onItemClose&quot;</span><span class="err">:</span> <span class="s2">&quot;someFn&quot;</span> <span class="c1">// where the collection view has a method `someFn`
+</span><span class="p">}</span>
+</pre>
+<p>You can also use a method for <code>itemEvents</code> that returns a hash.</p>
+<pre class="highlight javascript"><span class="nx">itemEvents</span><span class="err">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="s2">&quot;render&quot;</span><span class="err">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;an itemView has been rendered&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+<h3 id="collectionview&#39;s-builditemview">CollectionView&rsquo;s <code>buildItemView</code></h3>
+
+<p>When a custom view instance needs to be created for the <code>itemView</code> that
+represents an item, override the <code>buildItemView</code> method. This method
+takes three parameters and returns a view instance to be used as the
+item view.</p>
+<pre class="highlight javascript"><span class="nx">buildItemView</span><span class="err">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">ItemViewType</span><span class="p">,</span> <span class="nx">itemViewOptions</span><span class="p">){</span>
+  <span class="c1">// build the final list of options for the item view type
+</span>  <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span><span class="na">model</span><span class="p">:</span> <span class="nx">item</span><span class="p">},</span> <span class="nx">itemViewOptions</span><span class="p">);</span>
+  <span class="c1">// create the item view instance
+</span>  <span class="kd">var</span> <span class="nx">view</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ItemViewType</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
+  <span class="c1">// return it
+</span>  <span class="k">return</span> <span class="nx">view</span><span class="p">;</span>
+<span class="p">},</span>
+</pre>
+<h3 id="collectionview&#39;s-additemview">CollectionView&rsquo;s <code>addItemView</code></h3>
+
+<p>The <code>addItemView</code> method is responsible for rendering the <code>itemViews</code> and adding them to the HTML for the <code>collectionView</code> instance. It is also responsible for triggering the events per <code>ItemView</code>. In most cases you should not override this method. However if you do want to short circut this method, it can be accomplished via the following.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">addItemView</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">ItemView</span><span class="p">,</span> <span class="nx">index</span><span class="p">){</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">shouldBeShown</span><span class="p">())</span> <span class="p">{</span>
+      <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">addItemView</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h2 id="collectionview&#39;s-emptyview">CollectionView&rsquo;s <code>emptyView</code></h2>
+
+<p>When a collection has no items, and you need to render a view other than
+the list of itemViews, you can specify an <code>emptyView</code> attribute on your
+collection view.</p>
+<pre class="highlight javascript"><span class="nx">NoItemsView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">template</span><span class="p">:</span> <span class="s2">&quot;#show-no-items-message-template&quot;</span>
+<span class="p">});</span>
+
+<span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">// ...
+</span>
+  <span class="nl">emptyView</span><span class="p">:</span> <span class="nx">NoItemsView</span>
+<span class="p">});</span>
+</pre>
+<h3 id="collectionview&#39;s-getemptyview">CollectionView&rsquo;s <code>getEmptyView</code></h3>
+
+<p>If you need the <code>emptyView</code>&rsquo;s type chosen dynamically, specify <code>getEmptyView</code>:</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">// ...
+</span>
+  <span class="nl">getEmptyView</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// custom logic
+</span>    <span class="k">return</span> <span class="nx">NoItemsView</span><span class="p">;</span>
+  <span class="p">}</span>
+</pre>
+<p>This will render the <code>emptyView</code> and display the message that needs to
+be displayed when there are no items.</p>
+
+<p>If you want to control when the empty view is rendered, you can override
+<code>isEmpty</code>:</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">isEmpty</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">collection</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// some logic to calculate if the view should be rendered as empty
+</span>    <span class="k">return</span> <span class="nx">someBoolean</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h2 id="callback-methods">Callback Methods</h2>
+
+<p>There are several callback methods that can be provided on a
+<code>CollectionView</code>. If they are found, they will be called by the
+view&rsquo;s base methods. These callback methods are intended to be
+handled within the view definition directly.</p>
+
+<h3 id="onbeforerender-callback">onBeforeRender callback</h3>
+
+<p>A <code>onBeforeRender</code> callback will be called just prior to rendering
+the collection view.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">onBeforeRender</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// do stuff here
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h3 id="onrender-callback">onRender callback</h3>
+
+<p>After the view has been rendered, a <code>onRender</code> method will be called.
+You can implement this in your view to provide custom code for dealing
+with the view&rsquo;s <code>el</code> after it has been rendered:</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">onRender</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// do stuff here
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h3 id="onbeforeclose-callback">onBeforeClose callback</h3>
+
+<p>This method is called just before closing the view.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">onBeforeClose</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// do stuff here
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h3 id="onclose-callback">onClose callback</h3>
+
+<p>This method is called just after closing the view.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">onClose</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// do stuff here
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h3 id="onbeforeitemadded-callback">onBeforeItemAdded callback</h3>
+
+<p>This callback function allows you to know when an item / item view
+instance is about to be added to the collection view. It provides access to
+the view instance for the item that was added.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">onBeforeItemAdded</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">itemView</span><span class="p">){</span>
+    <span class="c1">// work with the itemView instance, here
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h3 id="onafteritemadded-callback">onAfterItemAdded callback</h3>
+
+<p>This callback function allows you to know when an item / item view
+instance has been added to the collection view. It provides access to
+the view instance for the item that was added.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">onAfterItemAdded</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">itemView</span><span class="p">){</span>
+    <span class="c1">// work with the itemView instance, here
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h3 id="onitemremoved-callback">onItemRemoved callback</h3>
+
+<p>This callback function allows you to know when an item / item view
+instance has been deleted or removed from the
+collection.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">onItemRemoved</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">itemView</span><span class="p">){</span>
+    <span class="c1">// work with the itemView instance, here
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h2 id="collectionview-events">CollectionView Events</h2>
+
+<p>There are several events that will be triggered during the life
+of a collection view. Each of these events is called with the
+<a href="./marionette.functions.md">Marionette.triggerMethod</a> function,
+which calls a corresponding &ldquo;on{EventName}&rdquo; method on the
+view instance (see <a href="#callback-methods">above</a>).</p>
+
+<h3 id="&quot;before:render&quot;-event">&ldquo;before:render&rdquo; event</h3>
+
+<p>Triggers just prior to the view being rendered. Also triggered as
+&ldquo;collection:before:render&rdquo; / <code>onCollectionBeforeRender</code>.</p>
+<pre class="highlight javascript"><span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({...});</span>
+
+<span class="kd">var</span> <span class="nx">myView</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyView</span><span class="p">();</span>
+
+<span class="nx">myView</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;before:render&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;the collection view is about to be rendered&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">myView</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+</pre>
+<h3 id="&quot;render&quot;-event">&ldquo;render&rdquo; event</h3>
+
+<p>A &ldquo;collection:rendered&rdquo; / <code>onCollectionRendered</code> event will also be fired. This allows you to
+add more than one callback to execute after the view is rendered,
+and allows parent views and other parts of the application to
+know that the view was rendered.</p>
+<pre class="highlight javascript"><span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({...});</span>
+
+<span class="kd">var</span> <span class="nx">myView</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyView</span><span class="p">();</span>
+
+<span class="nx">myView</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;render&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;the collection view was rendered!&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">myView</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;collection:rendered&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;the collection view was rendered!&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">myView</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+</pre>
+<h3 id="&quot;before:close&quot;-event">&ldquo;before:close&rdquo; event</h3>
+
+<p>Triggered just before closing the view. A &ldquo;collection:before:close&rdquo; /
+<code>onCollectionBeforeClose</code> event will also be fired</p>
+<pre class="highlight javascript"><span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({...});</span>
+
+<span class="kd">var</span> <span class="nx">myView</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyView</span><span class="p">();</span>
+
+<span class="nx">myView</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;collection:before:close&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;the collection view is about to be closed&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">myView</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+</pre>
+<h3 id="&quot;closed&quot;-/-&quot;collection:closed&quot;-event">&ldquo;closed&rdquo; / &ldquo;collection:closed&rdquo; event</h3>
+
+<p>Triggered just after closing the view, both with corresponding
+method calls.</p>
+<pre class="highlight javascript"><span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({...});</span>
+
+<span class="kd">var</span> <span class="nx">myView</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyView</span><span class="p">();</span>
+
+<span class="nx">myView</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;collection:closed&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;the collection view is now closed&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">myView</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+</pre>
+<h3 id="&quot;before:item:added&quot;-/-&quot;after:item:added&quot;-event">&ldquo;before:item:added&rdquo; / &ldquo;after:item:added&rdquo; event</h3>
+
+<p>The &ldquo;before:item:added&rdquo; event and corresponding <code>onBeforeItemAdded</code>
+method are triggered just after creating a new itemView instance for
+an item that was added to the collection, but before the
+view is rendered and added to the DOM.</p>
+
+<p>The &ldquo;after:item:added&rdquo; event and corresponding <code>onAfterItemAdded</code>
+method are triggered after rendering the view and adding it to the
+view&rsquo;s DOM element.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">MyCV</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">// ...
+</span>
+  <span class="nl">onBeforeItemAdded</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// ...
+</span>  <span class="p">},</span>
+
+  <span class="nl">onAfterItemAdded</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// ...
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">cv</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyCV</span><span class="p">({...});</span>
+
+<span class="nx">cv</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;before:item:added&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">viewInstance</span><span class="p">){</span>
+  <span class="c1">// ...
+</span><span class="p">});</span>
+
+<span class="nx">cv</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;after:item:added&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">viewInstance</span><span class="p">){</span>
+  <span class="c1">// ...
+</span><span class="p">});</span>
+</pre>
+<h3 id="&quot;item:removed&quot;-event">&ldquo;item:removed&rdquo; event</h3>
+
+<p>Triggered after an itemView instance has been closed and
+removed, when its item was deleted or removed from the
+collection.</p>
+<pre class="highlight javascript"><span class="nx">cv</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;item:removed&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">viewInstance</span><span class="p">){</span>
+  <span class="c1">// ...
+</span><span class="p">});</span>
+</pre>
+<h3 id="&quot;itemview:*&quot;-event-bubbling-from-child-views">&ldquo;itemview:*&rdquo; event bubbling from child views</h3>
+
+<p>When an item view within a collection view triggers an
+event, that event will bubble up through the parent
+collection view with &ldquo;itemview:&rdquo; prepended to the event
+name.</p>
+
+<p>That is, if a child view triggers &ldquo;do:something&rdquo;, the
+parent collection view will then trigger &ldquo;itemview:do:something&rdquo;.</p>
+<pre class="highlight javascript"><span class="c1">// set up basic collection
+</span><span class="kd">var</span> <span class="nx">myModel</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyModel</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">myCollection</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyCollection</span><span class="p">();</span>
+<span class="nx">myCollection</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">myModel</span><span class="p">);</span>
+
+<span class="c1">// get the collection view in place
+</span><span class="nx">colView</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">CollectionView</span><span class="p">({</span>
+  <span class="na">collection</span><span class="p">:</span> <span class="nx">myCollection</span>
+<span class="p">});</span>
+<span class="nx">colView</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+
+<span class="c1">// bind to the collection view's events that were bubbled
+// from the child view
+</span><span class="nx">colView</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;itemview:do:something&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">childView</span><span class="p">,</span> <span class="nx">msg</span><span class="p">){</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;I said, '&quot;</span> <span class="o">+</span> <span class="nx">msg</span> <span class="o">+</span> <span class="s2">&quot;'&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// hack, to get the child view and trigger from it
+</span><span class="kd">var</span> <span class="nx">childView</span> <span class="o">=</span> <span class="nx">colView</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">myModel</span><span class="p">.</span><span class="nx">cid</span><span class="p">];</span>
+<span class="nx">childView</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s2">&quot;do:something&quot;</span><span class="p">,</span> <span class="s2">&quot;do something!&quot;</span><span class="p">);</span>
+</pre>
+<p>The result of this will be an alert box that says
+&ldquo;I said, &lsquo;do something!&rsquo;&rdquo;.</p>
+
+<p>Also note that you would not normally grab a reference to
+the child view the way this is showing. I&rsquo;m merely using
+that hack as a way to demonstrate the event bubbling.
+Normally, you would have your item view listening to DOM
+events or model change events, and then triggering an event
+of its own based on that.</p>
+
+<h2 id="collectionview-render">CollectionView render</h2>
+
+<p>The <code>render</code> method of the collection view is responsible for
+rendering the entire collection. It loops through each of the
+items in the collection and renders them individually as an
+<code>itemView</code>.</p>
+<pre class="highlight javascript"><span class="nx">MyCollectionView</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({...});</span>
+
+<span class="k">new</span> <span class="nx">MyCollectionView</span><span class="p">().</span><span class="nx">render</span><span class="p">().</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="c1">// all of the children are now rendered. do stuff here.
+</span><span class="p">});</span>
+</pre>
+<h2 id="collectionview:-automatic-rendering">CollectionView: Automatic Rendering</h2>
+
+<p>The collection view binds to the &ldquo;add&rdquo;, &ldquo;remove&rdquo; and &ldquo;reset&rdquo; events of the
+collection that is specified.</p>
+
+<p>When the collection for the view is &ldquo;reset&rdquo;, the view will call <code>render</code> on
+itself and re-render the entire collection.</p>
+
+<p>When a model is added to the collection, the collection view will render that
+one model in to the collection of item views.</p>
+
+<p>When a model is removed from a collection (or destroyed / deleted), the collection
+view will close and remove that model&rsquo;s item view.</p>
+
+<h2 id="collectionview:-re-render-collection">CollectionView: Re-render Collection</h2>
+
+<p>If you need to re-render the entire collection, you can call the
+<code>view.render</code> method. This method takes care of closing all of
+the child views that may have previously been opened.</p>
+
+<h2 id="collectionview&#39;s-appendhtml">CollectionView&rsquo;s appendHtml</h2>
+
+<p>By default the collection view will append the HTML of each ItemView
+into the element buffer, and then call jQuery&rsquo;s <code>.append</code> once at the
+end to move the HTML into the collection view&rsquo;s <code>el</code>.</p>
+
+<p>You can override this by specifying an <code>appendHtml</code> method in your
+view definition. This method takes three parameters and has no return
+value.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+
+    <span class="c1">// The default implementation:
+</span>  <span class="nl">appendHtml</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">collectionView</span><span class="p">,</span> <span class="nx">itemView</span><span class="p">,</span> <span class="nx">index</span><span class="p">){</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">collectionView</span><span class="p">.</span><span class="nx">isBuffering</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// buffering happens on reset events and initial renders
+</span>      <span class="c1">// in order to reduce the number of inserts into the
+</span>      <span class="c1">// document, which are expensive.
+</span>      <span class="nx">collectionView</span><span class="p">.</span><span class="nx">elBuffer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">itemView</span><span class="p">.</span><span class="nx">el</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+      <span class="c1">// If we've already rendered the main collection, just
+</span>      <span class="c1">// append the new items directly into the element.
+</span>      <span class="nx">collectionView</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">itemView</span><span class="p">.</span><span class="nx">el</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+
+  <span class="c1">// Called after all children have been appended into the elBuffer
+</span>  <span class="nl">appendBuffer</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">collectionView</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">collectionView</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">buffer</span><span class="p">);</span>
+  <span class="p">},</span>
+
+  <span class="c1">// called on initialize and after appendBuffer is called
+</span>  <span class="nl">initRenderBuffer</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">elBuffer</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createDocumentFragment</span><span class="p">();</span>
+  <span class="p">}</span>
+
+<span class="p">});</span>
+</pre>
+<p>The first parameter is the instance of the collection view that
+will receive the HTML from the second parameter, the current item
+view instance.</p>
+
+<p>The third parameter, <code>index</code>, is the index of the
+model that this itemView instance represents, in the collection
+that the model came from. This is useful for sorting a collection
+and displaying the sorted list in the correct order on the screen.</p>
+
+<p>Overrides of <code>appendHtml</code> that don&rsquo;t take into account the element
+buffer will work fine, but won&rsquo;t take advantage of the 60x performance
+increase the buffer provides.</p>
+
+<h2 id="collectionview&#39;s-children">CollectionView&rsquo;s children</h2>
+
+<p>The CollectionView uses <a href="https://github.com/marionettejs/backbone.babysitter">Backbone.BabySitter</a>
+to store and manage its child views. This allows you to easily access
+the views within the collection view, iterate them, find them by
+a given indexer such as the view&rsquo;s model or collection, and more.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">cv</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">({</span>
+  <span class="na">collection</span><span class="p">:</span> <span class="nx">someCollection</span>
+<span class="p">});</span>
+
+<span class="nx">cv</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
+
+
+<span class="c1">// retrieve a view by model
+</span><span class="kd">var</span> <span class="nx">v</span> <span class="o">=</span> <span class="nx">cv</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">findByModel</span><span class="p">(</span><span class="nx">someModel</span><span class="p">);</span>
+
+<span class="c1">// iterate over all of the views and process them
+</span><span class="nx">cv</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">view</span><span class="p">){</span>
+
+  <span class="c1">// process the `view` here
+</span>
+<span class="p">});</span>
+</pre>
+<p>For more information on the available features and functionality of
+the <code>.children</code>, see the <a href="https://github.com/marionettejs/backbone.babysitter">Backbone.BabySitter documentation</a>.</p>
+
+<h2 id="collectionview-close">CollectionView close</h2>
+
+<p>CollectionView implements a <code>close</code> method, which is called by the
+region managers automatically. As part of the implementation, the
+following are performed:</p>
+
+<ul>
+<li>unbind all <code>listenTo</code> events</li>
+<li>unbind all custom view events</li>
+<li>unbind all DOM events</li>
+<li>unbind all item views that were rendered</li>
+<li>remove <code>this.el</code> from the DOM</li>
+<li>call an <code>onClose</code> event on the view, if one is provided</li>
+</ul>
+
+<p>By providing an <code>onClose</code> event in your view definition, you can
+run custom code for your view that is fired after your view has been
+closed and cleaned up. This lets you handle any additional clean up
+code without having to override the <code>close</code> method.</p>
+<pre class="highlight javascript"><span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">CollectionView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">onClose</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// custom cleanup or closing code, here
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+          </div>
+        </div>
+    </body>
+</html>

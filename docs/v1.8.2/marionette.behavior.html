@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="docs no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="docs no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="docs no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="docs no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Marionette.js</title>
+        <meta content="" name="description">
+        <meta name="viewport" content="width=device-width">
+        <link href="../../stylesheets/docs-9b3ec880.css" media="screen" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="//use.typekit.net/ycm5ipv.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <!--[if lt IE 9]><script src="js/vendor/selectivizr-1.0.2.min.js"></script><![endif]-->
+        <script src="../../javascripts/header-443c0a2a.js" type="text/javascript"></script>
+
+        <link rel="author" href="humans.txt">
+        <link rel="publisher" href="https://plus.google.com/101060306397560578875/">
+        <meta name="twitter:card" value="Make your backbone applications dance with a composite application architecture">
+        <meta name="twitter:site" value="@marionettejs">
+        <meta property="og:site_name" content="Marionette.js – Make your backbone applications dance with a composite application architecture!">
+        <meta property="og:image" content="http://marionettejs.com/images/og-standard.jpg">
+        <meta property="og:url" content="http://marionettejs.com/">
+        <meta property="og:description" content="">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+        <script src="/downloads/backbone.marionette.js"></script>
+        <script src="../../javascripts/docs-7c87f248.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="docs">
+          <nav class="docs__sidebar">
+            <h3>Marionette API</h3>
+            <ul>
+              <li><a href="marionette.application">Application</a></li>
+              <li><a href="marionette.application.module">Application.module</a></li>
+              <li><a href="marionette.approuter">AppRouter</a></li>
+              <li><a href="marionette.behavior">Behavior</a></li>
+              <li><a href="marionette.behaviors">Behaviors</a></li>
+              <li><a href="marionette.callbacks">Callbacks</a></li>
+              <li><a href="marionette.collectionview">CollectionView</a></li>
+              <li><a href="marionette.compositeview">CompositeView</a></li>
+              <li><a href="marionette.configuration">Configuration</a></li>
+              <li><a href="marionette.controller">Controller</a></li>
+              <li><a href="marionette.functions">Functions</a></li>
+              <li><a href="marionette.itemview">ItemView</a></li>
+              <li><a href="marionette.layout">Layout</a></li>
+              <li><a href="marionette.region">Region</a></li>
+              <li><a href="marionette.regionmanager">RegionManager</a></li>
+              <li><a href="marionette.renderer">Renderer</a></li>
+              <li><a href="marionette.templatecache">TemplateCache</a></li>
+              <li><a href="marionette.view">View</a></li>
+            </ul>
+          </nav>
+          <div class="docs__content">
+            <h1 id="marionette.behavior">Marionette.Behavior</h1>
+
+<p>A <code>Behavior</code> is an  isolated set of DOM / user interactions that can be mixed into any <code>View</code>. <code>Behaviors</code> allow you to blackbox <code>View</code> specific interactions into portable logical chunks, keeping your <code>views</code> simple and your code DRY.</p>
+
+<h2 id="documentation-index">Documentation Index</h2>
+
+<ul>
+<li><a href="#the-motivation">Motivation</a></li>
+<li><a href="#using">Using Behaviors</a></li>
+<li><a href="#api">API</a>
+
+<ul>
+<li><a href="#the-event-proxy">Event proxy</a></li>
+<li><a href="#model-events">Model Events</a></li>
+<li><a href="#model-events">Collection Events</a></li>
+<li><a href="#$">$</a></li>
+<li><a href="#$el">$el</a></li>
+<li><a href="#defaults">Defaults</a></li>
+<li><a href="#view">View</a></li>
+</ul></li>
+</ul>
+
+<h2 id="the-motivation">The Motivation</h2>
+
+<p>As you build more and more complex views you will find that your <code>view</code> becomes less about displaying model data, and more about interactions.</p>
+
+<p>These interactions tend to be chunks of logic that you want to use in multiple views.</p>
+
+<h2 id="using">Using</h2>
+
+<p>Here is an example of a simple <code>itemView</code>. Let&rsquo;s take a stab at simplifying it, and abstracting behaviors from it.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">ui</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;close&quot;</span><span class="err">:</span> <span class="s2">&quot;.close-btn&quot;</span>
+  <span class="p">},</span>
+
+  <span class="na">events</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;click @ui.close&quot;</span><span class="err">:</span> <span class="s2">&quot;warnBeforeClose&quot;</span>
+  <span class="p">},</span>
+
+  <span class="na">warnBeforeClose</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;you are closing all your data is now gone!&quot;</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+  <span class="p">},</span>
+
+  <span class="na">onShow</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">close</span><span class="p">.</span><span class="nx">tooltip</span><span class="p">({</span>
+      <span class="na">text</span><span class="p">:</span> <span class="s2">&quot;what a nice mouse you have&quot;</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>Interaction points such as tooltips and warning messages are generic concepts. There is no need to recode them within your views. They are prime for abstraction into a higher level non-coupled concept, which is exactly what Behaviors provide you with.</p>
+
+<p>Here is the syntax for declaring which behaviors get used within a view.
+The keys in the hash are passed to <code>getBehaviorClass</code> to lookup the correct <code>Behavior</code> class.
+The options for each behavior are also passed to said Behavior during initialization. The options are then stored within each behavior under <code>options</code>.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">MyView</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">ItemView</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">ui</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;close&quot;</span><span class="err">:</span> <span class="s2">&quot;.close-btn&quot;</span>
+  <span class="p">},</span>
+
+  <span class="na">behaviors</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">CloseWarn</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">message</span><span class="p">:</span> <span class="s2">&quot;you are closing all your data is now gone!&quot;</span>
+    <span class="p">},</span>
+    <span class="na">ToolTip</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">text</span><span class="p">:</span> <span class="s2">&quot;what a nice mouse you have&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>Now let&rsquo;s create the <code>CloseWarn</code> behavior.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">CloseWarn</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">Behavior</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">// you can set default options
+</span>  <span class="c1">// just like you can in your Backbone Models
+</span>  <span class="c1">// they will be overriden if you pass in an option with the same key
+</span>  <span class="nl">defaults</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;message&quot;</span><span class="err">:</span> <span class="s2">&quot;you are closing!&quot;</span>
+  <span class="p">},</span>
+
+  <span class="c1">// behaviors have events that are bound to the views DOM
+</span>  <span class="nl">events</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;click @ui.close&quot;</span><span class="err">:</span> <span class="s2">&quot;warnBeforeClose&quot;</span>
+  <span class="p">},</span>
+
+  <span class="nl">warnBeforeClose</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
+    <span class="c1">// every Behavior has a hook into the
+</span>    <span class="c1">// view that it is attached to
+</span>    <span class="k">this</span><span class="p">.</span><span class="nx">view</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>And onto the <code>Tooltip</code> behavior.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">ToolTip</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">Behavior</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">ui</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">tooltip</span><span class="p">:</span> <span class="s1">'.tooltip'</span>
+  <span class="p">},</span>
+
+  <span class="na">onShow</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">tooltip</span><span class="p">.</span><span class="nx">tooltip</span><span class="p">({</span>
+      <span class="na">text</span><span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">text</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>There is one final piece to finalizing this. The user must define a location for where their <code>behaviors</code> are stored.
+A simple example of this would look like this:</p>
+<pre class="highlight javascript">  <span class="nx">Marionette</span><span class="p">.</span><span class="nx">Behaviors</span><span class="p">.</span><span class="nx">behaviorsLookup</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nx">Behaviors</span><span class="p">;</span>
+  <span class="p">}</span>
+</pre>
+<p>In this example you would then store your behaviors like this:</p>
+<pre class="highlight javascript"><span class="nb">window</span><span class="p">.</span><span class="nx">Behaviors</span><span class="p">.</span><span class="nx">ToolTip</span> <span class="o">=</span> <span class="nx">ToolTip</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">Behaviors</span><span class="p">.</span><span class="nx">CloseWarn</span> <span class="o">=</span> <span class="nx">CloseWarn</span><span class="p">;</span>
+</pre>
+<h2 id="api">API</h2>
+
+<h3 id="the-event-proxy">the event proxy</h3>
+
+<p>Behaviors are powered by an event proxy. What this means is that any events that are triggered by the view&rsquo;s <code>triggerMethod</code> function are passed to each Behavior on the view as well.</p>
+
+<p>As a real world example, whenever in your <code>view</code> you would have <code>onShow</code>, your behavior can also have this <code>onShow</code> method defined. The same follows for <code>modelEvents</code> and <code>collectionEvents</code>. Think of your behavior as a receiver for all of the events on your view instance.</p>
+
+<p>This concept also allows for a nice decoupled method to communicate to behaviors from your view instance.
+You can just call from within your view <code>this.triggerMethod(&quot;SomeEvent&quot;, {some: &quot;data&quot;})</code>. then your <code>behavior</code> class would look like this:</p>
+<pre class="highlight javascript"><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Behavior</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="na">onSomeEvent</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;wow such data&quot;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h3 id="model-events">Model Events</h3>
+
+<p><code>modelEvents</code> will respond to the view&rsquo;s model events.
+&ldquo;`js
+  Marionette.Behavior.extend({
+    modelEvents: {
+      &quot;change:doge&rdquo;: &ldquo;onDogeChange&rdquo;
+    },</p>
+<pre class="highlight text">onDogeChange: function() {
+  // buy more doge...
+}
+</pre>
+<p>});
+&ldquo;`</p>
+
+<h3 id="collection-events">Collection Events</h3>
+
+<p><code>collectionEvents</code> will respond to the view&rsquo;s collection events.
+&rdquo;`js
+  Marionette.Behavior.extend({
+    collectionEvents: {
+      add: &ldquo;onCollectionAdd&rdquo;
+    },</p>
+<pre class="highlight text">onCollectionAdd: function() {
+}
+</pre>
+<p>});
+&ldquo;`</p>
+
+<h3 id="$">$</h3>
+
+<p><code>$</code> is a direct proxy of the views <code>$</code> lookup method.
+<code>js
+    Marionette.Behavior.extend({
+        onShow: function() {
+            this.$(&#39;.zerg&#39;)
+        }
+    });
+</code></p>
+
+<h3 id="$el">$el</h3>
+
+<p><code>$el</code> is a direct proxy of the views <code>el</code> cached as a jquery selector.
+<code>js
+Marionette.Behavior.extend({
+    onShow: function() {
+        this.$el.fadeOut(&#39;slow&#39;)
+    }
+});
+</code></p>
+
+<h3 id="defaults">defaults</h3>
+
+<p><code>defaults</code> can be a <code>hash</code> or <code>function</code> to define the default options for your behavior.
+The default options will be overridden depending on what you set as the options per behavior (this works just like a <code>backbone.model</code>).</p>
+<pre class="highlight javascript"><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Behavior</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="na">defaults</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">'deepSpace'</span><span class="err">:</span> <span class="mi">9</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre><pre class="highlight javascript"><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Behavior</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="na">defaults</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">'dominion'</span><span class="err">:</span> <span class="s1">'invasion'</span><span class="p">,</span>
+            <span class="s1">'doge'</span><span class="err">:</span> <span class="s1">'amaze'</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h3 id="view">view</h3>
+
+<p>The <code>view</code> is a reference to the view instance that the <code>behavior</code> is on.</p>
+<pre class="highlight javascript"><span class="nx">Marionette</span><span class="p">.</span><span class="nx">Behavior</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="na">onShow</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">view</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+          </div>
+        </div>
+    </body>
+</html>

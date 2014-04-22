@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="docs no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="docs no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="docs no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="docs no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Marionette.js</title>
+        <meta content="" name="description">
+        <meta name="viewport" content="width=device-width">
+        <link href="../../stylesheets/docs-9b3ec880.css" media="screen" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="//use.typekit.net/ycm5ipv.js"></script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <!--[if lt IE 9]><script src="js/vendor/selectivizr-1.0.2.min.js"></script><![endif]-->
+        <script src="../../javascripts/header-443c0a2a.js" type="text/javascript"></script>
+
+        <link rel="author" href="humans.txt">
+        <link rel="publisher" href="https://plus.google.com/101060306397560578875/">
+        <meta name="twitter:card" value="Make your backbone applications dance with a composite application architecture">
+        <meta name="twitter:site" value="@marionettejs">
+        <meta property="og:site_name" content="Marionette.js – Make your backbone applications dance with a composite application architecture!">
+        <meta property="og:image" content="http://marionettejs.com/images/og-standard.jpg">
+        <meta property="og:url" content="http://marionettejs.com/">
+        <meta property="og:description" content="">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+        <script src="/downloads/backbone.marionette.js"></script>
+        <script src="../../javascripts/docs-7c87f248.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="docs">
+          <nav class="docs__sidebar">
+            <h3>Marionette API</h3>
+            <ul>
+              <li><a href="marionette.application">Application</a></li>
+              <li><a href="marionette.application.module">Application.module</a></li>
+              <li><a href="marionette.approuter">AppRouter</a></li>
+              <li><a href="marionette.behavior">Behavior</a></li>
+              <li><a href="marionette.behaviors">Behaviors</a></li>
+              <li><a href="marionette.callbacks">Callbacks</a></li>
+              <li><a href="marionette.collectionview">CollectionView</a></li>
+              <li><a href="marionette.compositeview">CompositeView</a></li>
+              <li><a href="marionette.configuration">Configuration</a></li>
+              <li><a href="marionette.controller">Controller</a></li>
+              <li><a href="marionette.functions">Functions</a></li>
+              <li><a href="marionette.itemview">ItemView</a></li>
+              <li><a href="marionette.layout">Layout</a></li>
+              <li><a href="marionette.region">Region</a></li>
+              <li><a href="marionette.regionmanager">RegionManager</a></li>
+              <li><a href="marionette.renderer">Renderer</a></li>
+              <li><a href="marionette.templatecache">TemplateCache</a></li>
+              <li><a href="marionette.view">View</a></li>
+            </ul>
+          </nav>
+          <div class="docs__content">
+            <h1 id="marionette.approuter">Marionette.AppRouter</h1>
+
+<p>Reduce the boilerplate code of handling route events and then calling a single method on another object.
+Have your routers configured to call the method on your object, directly.</p>
+
+<h2 id="documentation-index">Documentation Index</h2>
+
+<ul>
+<li><a href="#configure-routes">Configure Routes</a></li>
+<li><a href="#configure-routes-in-constructor">Configure Routes In Constructor</a></li>
+<li><a href="#add-routes-at-runtime">Add Routes At Runtime</a></li>
+<li><a href="#specify-a-controller">Specify A Controller</a></li>
+<li><a href="#onroute">onRoute</a></li>
+</ul>
+
+<h2 id="configure-routes">Configure Routes</h2>
+
+<p>Configure an AppRouter with <code>appRoutes</code>. The route definition is passed on to Backbone&rsquo;s standard routing handlers. This means that you define routes like you normally would.  However, instead of providing a callback method that exists on the router, you provide a callback method that exists on the controller, which you specify for the router instance (see below.)</p>
+<pre class="highlight javascript"><span class="nx">MyRouter</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">AppRouter</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="c1">// &quot;someMethod&quot; must exist at controller.someMethod
+</span>  <span class="nl">appRoutes</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;some/route&quot;</span><span class="err">:</span> <span class="s2">&quot;someMethod&quot;</span>
+  <span class="p">},</span>
+
+  <span class="cm">/* standard routes can be mixed with appRoutes/Controllers above */</span>
+  <span class="nl">routes</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;some/otherRoute&quot;</span> <span class="err">:</span> <span class="s2">&quot;someOtherMethod&quot;</span>
+  <span class="p">},</span>
+  <span class="nl">someOtherMethod</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="c1">// do something here.
+</span>  <span class="p">}</span>
+
+<span class="p">});</span>
+</pre>
+<p>You can also add standard routes to an AppRouter with methods on the router.</p>
+
+<h2 id="configure-routes-in-constructor">Configure Routes In Constructor</h2>
+
+<p>Routes can be defined through the constructor function options, as well.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">MyRouter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">AppRouter</span><span class="p">({</span>
+  <span class="na">controller</span><span class="p">:</span> <span class="nx">myController</span><span class="p">,</span>
+  <span class="na">appRoutes</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;foo&quot;</span><span class="err">:</span> <span class="s2">&quot;doFoo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;bar/:id&quot;</span><span class="err">:</span> <span class="s2">&quot;doBar&quot;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<p>This allows you to create router instances without having to <code>.extend</code>
+from the AppRouter. You can just create the instance with the routes defined
+in the constructor, as shown.</p>
+
+<h2 id="add-routes-at-runtime">Add Routes At Runtime</h2>
+
+<p>In addition to setting the <code>appRoutes</code> for an AppRouter, you can add app routes
+at runtime, to an instance of a router. This is done with the <code>appRoute()</code>
+method call. It works the same as the built-in <code>router.route()</code> call from
+Backbone&rsquo;s Router, but has all the same semantics and behavior of the <code>appRoutes</code>
+configuration.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">MyRouter</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">AppRouter</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
+
+<span class="kd">var</span> <span class="nx">router</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyRouter</span><span class="p">();</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">appRoute</span><span class="p">(</span><span class="s2">&quot;/foo&quot;</span><span class="p">,</span> <span class="s2">&quot;fooThat&quot;</span><span class="p">);</span>
+</pre>
+<p>Also you can specify a controller with the multiple routes at runtime with method
+<code>processAppRoutes</code>. However, In this case the current controller of <code>AppRouter</code> will not change.</p>
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">MyRouter</span> <span class="o">=</span> <span class="nx">Marionette</span><span class="p">.</span><span class="nx">AppRouter</span><span class="p">.</span><span class="nx">extend</span><span class="p">({});</span>
+
+<span class="kd">var</span> <span class="nx">router</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyRouter</span><span class="p">();</span>
+<span class="nx">router</span><span class="p">.</span><span class="nx">processAppRoutes</span><span class="p">(</span><span class="nx">myController</span><span class="p">,</span> <span class="p">{</span>
+  <span class="s2">&quot;foo&quot;</span><span class="err">:</span> <span class="s2">&quot;doFoo&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;bar/:id&quot;</span><span class="err">:</span> <span class="s2">&quot;doBar&quot;</span>
+<span class="p">});</span>
+</pre>
+<h2 id="specify-a-controller">Specify A Controller</h2>
+
+<p>App routers can only use one <code>controller</code> object. You can either specify this
+directly in the router definition:</p>
+<pre class="highlight javascript"><span class="nx">someController</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">someMethod</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span> <span class="cm">/*...*/</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Backbone</span><span class="p">.</span><span class="nx">Marionette</span><span class="p">.</span><span class="nx">AppRouter</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">controller</span><span class="p">:</span> <span class="nx">someController</span>
+<span class="p">});</span>
+</pre>
+<p>&hellip; or in a parameter to the constructor:</p>
+<pre class="highlight javascript"><span class="nx">myObj</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">someMethod</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span> <span class="cm">/*...*/</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">new</span> <span class="nx">MyRouter</span><span class="p">({</span>
+  <span class="na">controller</span><span class="p">:</span> <span class="nx">myObj</span>
+<span class="p">});</span>
+</pre>
+<p>The object that is used as the <code>controller</code> has no requirements, other than it will
+contain the methods that you specified in the <code>appRoutes</code>.</p>
+
+<p>It is recommended that you divide your controller objects into smaller pieces of related functionality
+and have multiple routers / controllers, instead of just one giant router and controller.</p>
+
+<h2 id="onroute">onRoute</h2>
+
+<p>If it exists, AppRouters will call the <code>onRoute</code> method whenever a user navigates within your app. The
+callback receives three arguments: the name, path, and arguments of the route.</p>
+
+          </div>
+        </div>
+    </body>
+</html>
